@@ -1,0 +1,1104 @@
+================================================================================
+DETALHAMENTO COMPLETO: TODOS OS BUGS E CORREÇÕES NECESSÁRIAS
+================================================================================
+
+Este documento mostra EXATAMENTE o que precisa ser corrigido em cada arquivo.
+Total de bugs: 8 críticos
+Tempo estimado para corrigir: 1-2 horas
+
+================================================================================
+BUG #1: REMOVER CAMPO "numero_ordem" COMPLETAMENTE (14 referências)
+================================================================================
+
+O campo numero_ordem foi pedido para ser REMOVIDO mas continua em 14 locais.
+Precisa ser removido de TODAS as camadas.
+
+ARQUIVOS AFETADOS:
+- backend/app/schemas.py (3 referencias)
+- backend/app/services/sharepoint_service.py (1 referência)
+- backend/app/routes/reports.py (3 referências)
+- backend/app/routes/dashboard.py (2 referências)
+- backend/app/routes/history.py (2 referências)
+- frontend/src/pages/ReportFormPage.tsx (2 referências)
+- frontend/src/pages/HistoryPage.tsx (1 referência)
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: backend/app/schemas.py
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (tem numero_ordem em 3 locais):
+─────────────────────────────────────
+
+class ReportBase(BaseModel):
+    instalacao: str = Field(..., title="Instalação")
+    sistema: str = Field(..., title="Sistema")
+    equipamento: str = Field(..., title="Equipamento")
+    data: date = Field(..., title="Data")
+    gerencia: str = Field(..., title="Gerência")
+    numero_ordem: str | None = Field(None, title="Número da Ordem")  ← REMOVER
+    situacao_identificada: str = Field(..., min_length=50, title="Situação Identificada")
+
+
+class ReportCreate(ReportBase):
+    pass
+
+
+class ReportUpdate(BaseModel):
+    instalacao: Optional[str]
+    sistema: Optional[str]
+    equipamento: Optional[str]
+    data: Optional[date]
+    gerencia: Optional[str]
+    numero_ordem: Optional[str]  ← REMOVER
+    situacao_identificada: Optional[str]
+
+
+class ReportResponse(ReportBase):
+    id: int
+    usuario_criacao: Optional[str]
+    data_criacao: Optional[str]
+    usuario_alteracao: Optional[str]
+    data_alteracao: Optional[str]
+    evidencias: Optional[List[str]] = []
+
+
+DEPOIS (sem numero_ordem):
+──────────────────────────
+
+class ReportBase(BaseModel):
+    instalacao: str = Field(..., title="Instalação")
+    sistema: str = Field(..., title="Sistema")
+    equipamento: str = Field(..., title="Equipamento")
+    data: date = Field(..., title="Data")
+    gerencia: str = Field(..., title="Gerência")
+    situacao_identificada: str = Field(..., min_length=50, title="Situação Identificada")
+
+
+class ReportCreate(ReportBase):
+    pass
+
+
+class ReportUpdate(BaseModel):
+    instalacao: Optional[str]
+    sistema: Optional[str]
+    equipamento: Optional[str]
+    data: Optional[date]
+    gerencia: Optional[str]
+    situacao_identificada: Optional[str]
+
+
+class ReportResponse(ReportBase):
+    id: int
+    usuario_criacao: Optional[str]
+    data_criacao: Optional[str]
+    usuario_alteracao: Optional[str]
+    data_alteracao: Optional[str]
+    evidencias: Optional[List[str]] = []
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: backend/app/services/sharepoint_service.py
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (contém auto-geração de numero_ordem):
+─────────────────────────────────────────────
+
+def create_report(self, fields: dict[str, Any]) -> dict[str, Any]:
+    reports = read_json(REPORTS_PATH)
+    next_id = max((item.get("id", 0) for item in reports), default=0) + 1
+    # Auto-assign NumeroOrdem if not provided: use max existing NumeroOrdem + 1
+    try:
+        existing_numbers = [int((r.get("fields", {}).get("NumeroOrdem") or 0)) for r in reports]
+        next_num = max(existing_numbers, default=0) + 1
+    except Exception:
+        # fallback to using next_id
+        next_num = next_id
+    if not fields.get("NumeroOrdem"):
+        fields["NumeroOrdem"] = str(next_num)  ← REMOVER TUDO ISSO
+
+    new_report = {"id": next_id, "fields": fields}
+    reports.append(new_report)
+    write_json(REPORTS_PATH, reports)
+    return new_report
+
+
+DEPOIS (sem auto-geração):
+──────────────────────────
+
+def create_report(self, fields: dict[str, Any]) -> dict[str, Any]:
+    reports = read_json(REPORTS_PATH)
+    next_id = max((item.get("id", 0) for item in reports), default=0) + 1
+    
+    new_report = {"id": next_id, "fields": fields}
+    reports.append(new_report)
+    write_json(REPORTS_PATH, reports)
+    return new_report
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: backend/app/routes/reports.py
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (serialize_report contém numero_ordem):
+──────────────────────────────────────────────
+
+def serialize_report(item: dict) -> dict:
+    fields = item.get("fields", {})
+    return {
+        "id": item.get("id"),
+        "instalacao": fields.get("Instalacao", ""),
+        "sistema": fields.get("Sistema", ""),
+        "equipamento": fields.get("Equipamento", ""),
+        "data": fields.get("Data", ""),
+        "gerencia": fields.get("Gerencia", ""),
+        "numero_ordem": fields.get("NumeroOrdem", ""),  ← REMOVER
+        "situacao_identificada": fields.get("SituacaoIdentificada", ""),
+        "usuario_criacao": fields.get("UsuarioCriacao", ""),
+        "data_criacao": fields.get("DataCriacao", ""),
+        "usuario_alteracao": fields.get("UsuarioAlteracao", ""),
+        "data_alteracao": fields.get("DataAlteracao", ""),
+        "evidencias": json.loads(fields.get("Evidencias", "[]")) if fields.get("Evidencias") else [],
+    }
+
+
+@router.post("/", response_model=ReportResponse)
+def create_report(payload: ReportCreate, user: dict = Depends(get_current_user)):
+    fields = {
+        "Instalacao": payload.instalacao,
+        "Sistema": payload.sistema,
+        "Equipamento": payload.equipamento,
+        "Data": payload.data.isoformat(),
+        "Gerencia": payload.gerencia,
+        "NumeroOrdem": payload.numero_ordem,  ← REMOVER (payload não tem mais numero_ordem)
+        "SituacaoIdentificada": payload.situacao_identificada,
+    }
+    result = service.create_report(fields, user["email"])
+    return serialize_report(result)
+
+
+DEPOIS (sem numero_ordem):
+──────────────────────────
+
+def serialize_report(item: dict) -> dict:
+    fields = item.get("fields", {})
+    return {
+        "id": item.get("id"),
+        "instalacao": fields.get("Instalacao", ""),
+        "sistema": fields.get("Sistema", ""),
+        "equipamento": fields.get("Equipamento", ""),
+        "data": fields.get("Data", ""),
+        "gerencia": fields.get("Gerencia", ""),
+        "situacao_identificada": fields.get("SituacaoIdentificada", ""),
+        "usuario_criacao": fields.get("UsuarioCriacao", ""),
+        "data_criacao": fields.get("DataCriacao", ""),
+        "usuario_alteracao": fields.get("UsuarioAlteracao", ""),
+        "data_alteracao": fields.get("DataAlteracao", ""),
+        "evidencias": json.loads(fields.get("Evidencias", "[]")) if fields.get("Evidencias") else [],
+    }
+
+
+@router.post("/", response_model=ReportResponse)
+def create_report(payload: ReportCreate, user: dict = Depends(get_current_user)):
+    fields = {
+        "Instalacao": payload.instalacao,
+        "Sistema": payload.sistema,
+        "Equipamento": payload.equipamento,
+        "Data": payload.data.isoformat(),
+        "Gerencia": payload.gerencia,
+        "SituacaoIdentificada": payload.situacao_identificada,
+    }
+    result = service.create_report(fields, user["email"])
+    return serialize_report(result)
+
+
+TAMBÉM EM routes/reports.py, remover da função update_report:
+────────────────────────────────────────────────────────────
+
+ANTES:
+    if "numero_ordem" in fields:
+        fields["NumeroOrdem"] = fields.pop("numero_ordem")
+
+DEPOIS: (deletar essas linhas)
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: backend/app/routes/dashboard.py
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (map_item contém numero_ordem):
+──────────────────────────────────────
+
+def map_item(item: dict) -> dict:
+    fields = item.get("fields", {})
+    return {
+        "gerencia": fields.get("Gerencia", ""),
+        "sistema": fields.get("Sistema", ""),
+        "equipamento": fields.get("Equipamento", ""),
+        "usuario": fields.get("UsuarioCriacao", ""),
+        "data": fields.get("Data", ""),
+        "numero_ordem": fields.get("NumeroOrdem", ""),  ← REMOVER
+    }
+
+
+@router.get("/summary")
+def get_summary(user: dict = Depends(get_current_user)):
+    raw = service.list_reports()
+    items = raw.get("value", [])
+    mapped = [map_item(item) for item in items]
+
+    total_records = len(mapped)
+    total_orders = len({item["numero_ordem"] for item in mapped if item["numero_ordem"]})  ← REMOVER
+    total_failures = total_records
+    total_users = len({item["usuario"] for item in mapped if item["usuario"]})
+
+    ...
+
+DEPOIS (sem numero_ordem):
+──────────────────────────
+
+def map_item(item: dict) -> dict:
+    fields = item.get("fields", {})
+    return {
+        "gerencia": fields.get("Gerencia", ""),
+        "sistema": fields.get("Sistema", ""),
+        "equipamento": fields.get("Equipamento", ""),
+        "usuario": fields.get("UsuarioCriacao", ""),
+        "data": fields.get("Data", ""),
+    }
+
+
+@router.get("/summary")
+def get_summary(user: dict = Depends(get_current_user)):
+    raw = service.list_reports()
+    items = raw.get("value", [])
+    mapped = [map_item(item) for item in items]
+
+    total_records = len(mapped)
+    total_orders = total_records  ← SIMPLIFICAR (total_orders = total_records)
+    total_failures = total_records
+    total_users = len({item["usuario"] for item in mapped if item["usuario"]})
+
+    ...
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: backend/app/routes/history.py
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (contém numero_ordem em 2 locais):
+────────────────────────────────────────
+
+def serialize_report(item: dict) -> dict:
+    fields = item.get("fields", {})
+    return {
+        "id": item.get("id"),
+        "instalacao": fields.get("Instalacao", ""),
+        "sistema": fields.get("Sistema", ""),
+        "equipamento": fields.get("Equipamento", ""),
+        "data": fields.get("Data", ""),
+        "gerencia": fields.get("Gerencia", ""),
+        "numero_ordem": fields.get("NumeroOrdem", ""),  ← REMOVER
+        "situacao_identificada": fields.get("SituacaoIdentificada", ""),
+        "usuario_criacao": fields.get("UsuarioCriacao", ""),
+        "data_criacao": fields.get("DataCriacao", ""),
+        "evidencias": fields.get("Evidencias", "[]"),
+    }
+
+
+@router.get("/", response_model=List[ReportResponse])
+def list_history(
+    gerencia: str | None = None,
+    start_date: date | None = None,
+    end_date: date | None = None,
+    numero_ordem: str | None = None,  ← REMOVER (parâmetro)
+    search: str | None = None,
+    user: dict = Depends(get_current_user),
+):
+    filters = {}
+    if gerencia:
+        filters["$filter"] = f"fields/Gerencia eq '{gerencia}'"
+    if numero_ordem:  ← REMOVER ESTE BLOCO
+        filters["$filter"] = (filters.get("$filter", "") + f" and fields/NumeroOrdem eq '{numero_ordem}'").strip()
+    if start_date and end_date:
+        ...
+
+
+DEPOIS (sem numero_ordem):
+──────────────────────────
+
+def serialize_report(item: dict) -> dict:
+    fields = item.get("fields", {})
+    return {
+        "id": item.get("id"),
+        "instalacao": fields.get("Instalacao", ""),
+        "sistema": fields.get("Sistema", ""),
+        "equipamento": fields.get("Equipamento", ""),
+        "data": fields.get("Data", ""),
+        "gerencia": fields.get("Gerencia", ""),
+        "situacao_identificada": fields.get("SituacaoIdentificada", ""),
+        "usuario_criacao": fields.get("UsuarioCriacao", ""),
+        "data_criacao": fields.get("DataCriacao", ""),
+        "evidencias": fields.get("Evidencias", "[]"),
+    }
+
+
+@router.get("/", response_model=List[ReportResponse])
+def list_history(
+    gerencia: str | None = None,
+    start_date: date | None = None,
+    end_date: date | None = None,
+    search: str | None = None,
+    user: dict = Depends(get_current_user),
+):
+    filters = {}
+    if gerencia:
+        filters["$filter"] = f"fields/Gerencia eq '{gerencia}'"
+    if start_date and end_date:
+        ...
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: frontend/src/pages/ReportFormPage.tsx
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (formState contém numero_ordem em 2 locais):
+──────────────────────────────────────────────────
+
+const [formState, setFormState] = useState({
+    instalacao: "",
+    sistema: "",
+    equipamento: "",
+    data: "",
+    gerencia: "",
+    numero_ordem: "",  ← REMOVER
+    situacao_identificada: "",
+});
+
+
+const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      await axios.post(`${API_URL}/reports`, formState);
+      setMessage("Registro salvo com sucesso.");
+    } catch (err) {
+      setMessage("Falha ao salvar registro.");
+    }
+  };
+
+
+  <div className="form-field">
+    <label>Número da Ordem</label>
+    <input name="numero_ordem" value={formState.numero_ordem} onChange={handleChange} required />  ← REMOVER CAMPO
+  </div>
+
+
+DEPOIS (sem numero_ordem):
+──────────────────────────
+
+const [formState, setFormState] = useState({
+    instalacao: "",
+    sistema: "",
+    equipamento: "",
+    data: "",
+    gerencia: "",
+    situacao_identificada: "",
+});
+
+
+const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      await axios.post(`${API_URL}/reports`, formState);
+      setMessage("Registro salvo com sucesso.");
+    } catch (err) {
+      setMessage("Falha ao salvar registro.");
+    }
+  };
+
+(Campo <input> removido do JSX)
+
+────────────────────────────────────────────────────────────────────────────
+ARQUIVO: frontend/src/pages/HistoryPage.tsx
+────────────────────────────────────────────────────────────────────────────
+
+ANTES (coluna numero_ordem na tabela):
+──────────────────────────────────────
+
+<table>
+  <thead>
+    <tr>
+      <th>Ordem</th>  ← REMOVER
+      <th>Instalação</th>
+      <th>Sistema</th>
+      <th>Equipamento</th>
+      <th>Gerência</th>
+      <th>Data</th>
+      <th>Responsável</th>
+    </tr>
+  </thead>
+  <tbody>
+    {records.map((item) => (
+      <tr key={item.id}>
+        <td>{item.numero_ordem}</td>  ← REMOVER
+        <td>{item.instalacao}</td>
+        <td>{item.sistema}</td>
+        <td>{item.equipamento}</td>
+        <td>{item.gerencia}</td>
+        <td>{item.data}</td>
+        <td>{item.usuario_criacao}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+
+DEPOIS (sem coluna numero_ordem):
+─────────────────────────────────
+
+<table>
+  <thead>
+    <tr>
+      <th>Instalação</th>
+      <th>Sistema</th>
+      <th>Equipamento</th>
+      <th>Gerência</th>
+      <th>Data</th>
+      <th>Responsável</th>
+    </tr>
+  </thead>
+  <tbody>
+    {records.map((item) => (
+      <tr key={item.id}>
+        <td>{item.instalacao}</td>
+        <td>{item.sistema}</td>
+        <td>{item.equipamento}</td>
+        <td>{item.gerencia}</td>
+        <td>{item.data}</td>
+        <td>{item.usuario_criacao}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+================================================================================
+BUG #2: ADICIONAR ROTAS /login E /register NO App.tsx
+================================================================================
+
+ARQUIVO: frontend/src/App.tsx
+
+ANTES (faltam rotas /login e /register):
+────────────────────────────────────────
+
+import { Routes, Route, Navigate } from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
+import HistoryPage from "./pages/HistoryPage";
+import ReportFormPage from "./pages/ReportFormPage";
+import ExecutiveDashboardPage from "./pages/ExecutiveDashboardPage";
+import Footer from './components/Footer';
+
+function App() {
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<ReportFormPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/report" element={<ReportFormPage />} />
+        <Route path="/executive" element={<ExecutiveDashboardPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
+
+
+DEPOIS (com rotas /login e /register):
+──────────────────────────────────────
+
+import { Routes, Route, Navigate } from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
+import HistoryPage from "./pages/HistoryPage";
+import ReportFormPage from "./pages/ReportFormPage";
+import ExecutiveDashboardPage from "./pages/ExecutiveDashboardPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import Footer from './components/Footer';
+
+function App() {
+  return (
+    <div className="App">
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<ReportFormPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/report" element={<ReportFormPage />} />
+        <Route path="/executive" element={<ExecutiveDashboardPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;
+
+================================================================================
+BUG #3: CORRIGIR TRATAMENTO DE ERRO EM REQUISIÇÕES HTTP
+================================================================================
+
+ARQUIVO: frontend/src/pages/ReportFormPage.tsx
+
+ANTES (mensagem genérica, sem loading, sem validação):
+──────────────────────────────────────────────────────
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+
+function ReportFormPage() {
+  const navigate = useNavigate();
+  const [formState, setFormState] = useState({
+    instalacao: "",
+    sistema: "",
+    equipamento: "",
+    data: "",
+    gerencia: "",
+    numero_ordem: "",
+    situacao_identificada: "",
+  });
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      await axios.post(`${API_URL}/reports`, formState);
+      setMessage("Registro salvo com sucesso.");
+    } catch (err) {
+      setMessage("Falha ao salvar registro.");  ← GENÉRICO
+    }
+  };
+
+  return (
+    <div className="app-shell">
+      <header className="app-header">
+        <h1>Nova Ordem de Serviço</h1>
+      </header>
+      <div className="navigation-card">
+        <button type="button" className="secondary-button" onClick={() => navigate("/dashboard")}>Dashboard</button>
+        <button type="button" className="secondary-button" onClick={() => navigate("/history")}>Histórico</button>
+        <button type="button" className="secondary-button" onClick={() => navigate("/executive")}>Executivo</button>
+      </div>
+      <div className="form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="form-field">
+            <label>Instalação</label>
+            <input name="instalacao" value={formState.instalacao} onChange={handleChange} required />
+          </div>
+          ...
+          <div className="button-row">
+            <button type="submit" className="primary-button">Salvar</button>
+            <button type="reset" className="secondary-button">Limpar</button>
+          </div>
+        </form>
+        {message && <div className="form-message">{message}</div>}
+      </div>
+    </div>
+  );
+}
+
+export default ReportFormPage;
+
+
+DEPOIS (com loading, erro detalhado, validação):
+─────────────────────────────────────────────────
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+
+function ReportFormPage() {
+  const navigate = useNavigate();
+  const [formState, setFormState] = useState({
+    instalacao: "",
+    sistema: "",
+    equipamento: "",
+    data: "",
+    gerencia: "",
+    situacao_identificada: "",
+  });
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formState.instalacao.trim()) newErrors.instalacao = "Instalação é obrigatória";
+    if (!formState.sistema.trim()) newErrors.sistema = "Sistema é obrigatório";
+    if (!formState.equipamento.trim()) newErrors.equipamento = "Equipamento é obrigatório";
+    if (!formState.data) newErrors.data = "Data é obrigatória";
+    if (!formState.gerencia.trim()) newErrors.gerencia = "Gerência é obrigatória";
+    if (!formState.situacao_identificada.trim()) newErrors.situacao_identificada = "Situação é obrigatória (mín. 50 caracteres)";
+    if (formState.situacao_identificada.length < 50) newErrors.situacao_identificada = "Mínimo 50 caracteres";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    
+    if (!validateForm()) {
+      setMessage("Preencha todos os campos corretamente.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      await axios.post(`${API_URL}/reports`, formState);
+      setMessage("✅ Registro salvo com sucesso!");
+      setFormState({
+        instalacao: "",
+        sistema: "",
+        equipamento: "",
+        data: "",
+        gerencia: "",
+        situacao_identificada: "",
+      });
+      setTimeout(() => navigate("/dashboard"), 2000);
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.detail || err.message || "Falha ao salvar registro";
+      setMessage(`❌ Erro: ${errorMsg}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="app-shell">
+      <header className="app-header">
+        <h1>Nova Ordem de Serviço</h1>
+      </header>
+      <div className="navigation-card">
+        <button type="button" className="secondary-button" onClick={() => navigate("/dashboard")}>Dashboard</button>
+        <button type="button" className="secondary-button" onClick={() => navigate("/history")}>Histórico</button>
+        <button type="button" className="secondary-button" onClick={() => navigate("/executive")}>Executivo</button>
+      </div>
+      <div className="form-card">
+        <form onSubmit={handleSubmit}>
+          <div className="form-field">
+            <label>Instalação</label>
+            <input 
+              name="instalacao" 
+              value={formState.instalacao} 
+              onChange={handleChange} 
+              required 
+            />
+            {errors.instalacao && <span className="field-error">{errors.instalacao}</span>}
+          </div>
+
+          <div className="form-field">
+            <label>Sistema</label>
+            <input 
+              name="sistema" 
+              value={formState.sistema} 
+              onChange={handleChange} 
+              required 
+            />
+            {errors.sistema && <span className="field-error">{errors.sistema}</span>}
+          </div>
+
+          <div className="form-field">
+            <label>Equipamento</label>
+            <input 
+              name="equipamento" 
+              value={formState.equipamento} 
+              onChange={handleChange} 
+              required 
+            />
+            {errors.equipamento && <span className="field-error">{errors.equipamento}</span>}
+          </div>
+
+          <div className="form-field">
+            <label>Data</label>
+            <input 
+              type="date" 
+              name="data" 
+              value={formState.data} 
+              onChange={handleChange} 
+              required 
+            />
+            {errors.data && <span className="field-error">{errors.data}</span>}
+          </div>
+
+          <div className="form-field">
+            <label>Gerência</label>
+            <input 
+              name="gerencia" 
+              value={formState.gerencia} 
+              onChange={handleChange} 
+              required 
+            />
+            {errors.gerencia && <span className="field-error">{errors.gerencia}</span>}
+          </div>
+
+          <div className="form-field">
+            <label>Situação Identificada</label>
+            <textarea 
+              name="situacao_identificada" 
+              rows={15} 
+              value={formState.situacao_identificada} 
+              onChange={handleChange} 
+              required 
+              placeholder="Descreva em no mínimo 50 caracteres..."
+            />
+            {errors.situacao_identificada && <span className="field-error">{errors.situacao_identificada}</span>}
+          </div>
+
+          <div className="button-row">
+            <button 
+              type="submit" 
+              className="primary-button"
+              disabled={loading}
+            >
+              {loading ? "Salvando..." : "Salvar"}
+            </button>
+            <button 
+              type="reset" 
+              className="secondary-button"
+              disabled={loading}
+            >
+              Limpar
+            </button>
+          </div>
+        </form>
+        {message && <div className={`form-message ${message.includes("✅") ? "success" : "error"}`}>{message}</div>}
+      </div>
+    </div>
+  );
+}
+
+export default ReportFormPage;
+
+================================================================================
+BUG #4: CORRIGIR MEMORY LEAK EM DashboardPage (useEffect)
+================================================================================
+
+ARQUIVO: frontend/src/pages/DashboardPage.tsx
+
+ANTES (sem cleanup, memory leak):
+─────────────────────────────────
+
+useEffect(() => {
+    async function fetchSummary() {
+      const response = await axios.get(`${API_URL}/dashboard/summary`);
+      setSummary(response.data);
+    }
+
+    fetchSummary();
+    const interval = setInterval(fetchSummary, 60000);
+    return () => clearInterval(interval);  ← TEM CLEANUP, OK
+  }, []);
+
+
+DEPOIS (adicionar tratamento de erro e loading):
+────────────────────────────────────────────────
+
+const [summary, setSummary] = useState<any>(null);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState("");
+
+useEffect(() => {
+    let isMounted = true;
+    
+    async function fetchSummary() {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${API_URL}/dashboard/summary`);
+        if (isMounted) {
+          setSummary(response.data);
+          setError("");
+        }
+      } catch (err: any) {
+        if (isMounted) {
+          setError(err.message || "Erro ao carregar dados");
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    }
+
+    fetchSummary();
+    const interval = setInterval(fetchSummary, 60000);
+    
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+Adicionar no JSX:
+{loading && <div className="loading">Carregando...</div>}
+{error && <div className="error">Erro: {error}</div>}
+
+================================================================================
+BUG #5: ADICIONAR CSS PARA ERROS E VALIDAÇÃO
+================================================================================
+
+ARQUIVO: frontend/src/styles.css (adicionar ao final)
+
+Adicionar:
+
+.field-error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 4px;
+}
+
+.form-message {
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.form-message.success {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+}
+
+.form-message.error {
+  background-color: #ffcdd2;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.error {
+  background-color: #ffcdd2;
+  color: #d32f2f;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+================================================================================
+BUG #6: CORRIGIR JWT_SECRET PADRÃO (config.py)
+================================================================================
+
+ARQUIVO: backend/app/config.py
+
+ANTES (JWT_SECRET hardcoded):
+──────────────────────────────
+
+class Settings(BaseSettings):
+    APP_NAME: str = "Prompt Master"
+    ENVIRONMENT: str = "development"
+    JWT_SECRET: str = "dev-secret"  ← INSEGURO
+    JWT_ALGORITHM: str = "HS256"
+    ...
+
+
+DEPOIS (JWT_SECRET obrigatório em produção):
+──────────────────────────────────────────────
+
+from typing import Optional
+from pydantic_settings import BaseSettings
+from pydantic import AnyHttpUrl
+
+class Settings(BaseSettings):
+    APP_NAME: str = "Prompt Master"
+    ENVIRONMENT: str = "development"
+    JWT_SECRET: str = "dev-secret-change-in-production"  ← AVISO
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    SHAREPOINT_SITE_ID: Optional[str] = None
+    SHAREPOINT_ONE_DRIVE_ID: Optional[str] = None
+    SHAREPOINT_LIST_NAME: str = "RelatoriosTecnicos"
+    SHAREPOINT_USER_LIST_NAME: str = "Usuarios"
+    SHAREPOINT_LIBRARY_ID: Optional[str] = None
+    GRAPH_TENANT_ID: Optional[str] = None
+    GRAPH_CLIENT_ID: Optional[str] = None
+    GRAPH_CLIENT_SECRET: Optional[str] = None
+    GRAPH_SCOPE: str = "https://graph.microsoft.com/.default"
+    FRONTEND_URL: AnyHttpUrl = "http://localhost:5173"
+    PASSWORD_SALT_ROUNDS: int = 12
+    RATE_LIMIT_PER_MINUTE: int = 120
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        if self.ENVIRONMENT == "production" and self.JWT_SECRET == "dev-secret-change-in-production":
+            raise ValueError("JWT_SECRET deve ser configurado em variável de ambiente para produção")
+
+
+settings = Settings()
+
+================================================================================
+BUG #7: CORRIGIR datetime.utcnow() (deprecado em Python 3.12+)
+================================================================================
+
+ARQUIVO: backend/app/auth/token.py
+
+ANTES (usa datetime.utcnow()):
+──────────────────────────────
+
+from datetime import datetime, timedelta
+from typing import Any
+from jose import jwt
+from app.config import settings
+
+
+def create_access_token(subject: str) -> str:
+    expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)  ← DEPRECADO
+    to_encode: dict[str, Any] = {
+        "sub": subject,
+        "exp": expire,
+        "type": "access",
+    }
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
+
+def create_refresh_token(subject: str) -> str:
+    expire = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)  ← DEPRECADO
+    to_encode: dict[str, Any] = {
+        "sub": subject,
+        "exp": expire,
+        "type": "refresh",
+    }
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
+
+DEPOIS (usa datetime.now(timezone.utc)):
+─────────────────────────────────────────
+
+from datetime import datetime, timedelta, timezone
+from typing import Any
+from jose import jwt
+from app.config import settings
+
+
+def create_access_token(subject: str) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode: dict[str, Any] = {
+        "sub": subject,
+        "exp": expire,
+        "type": "access",
+    }
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
+
+def create_refresh_token(subject: str) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    to_encode: dict[str, Any] = {
+        "sub": subject,
+        "exp": expire,
+        "type": "refresh",
+    }
+    return jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+
+
+def verify_token(token: str) -> dict[str, Any]:
+    return jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
+
+================================================================================
+BUG #8: CORRIGIR LoginPage - NÃO USAR window.location.href
+================================================================================
+
+ARQUIVO: frontend/src/pages/LoginPage.tsx
+
+ANTES (usa window.location.href):
+─────────────────────────────────
+
+const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("refresh_token", response.data.refresh_token);
+      window.location.href = "/";  ← RECARREGA PÁGINA
+    } catch (err) {
+      setError("Falha no login. Verifique suas credenciais.");
+    }
+  };
+
+
+DEPOIS (usa navigate do react-router):
+──────────────────────────────────────
+
+const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("refresh_token", response.data.refresh_token);
+      navigate("/");  ← NÃO RECARREGA
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.detail || "Falha no login. Verifique suas credenciais.";
+      setError(errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+================================================================================
+RESUMO DAS MUDANÇAS
+================================================================================
+
+TOTAL DE ARQUIVOS A MODIFICAR: 10
+
+BACKEND (5 arquivos):
+✓ backend/app/schemas.py - remover numero_ordem (3 referências)
+✓ backend/app/services/sharepoint_service.py - remover auto-geração
+✓ backend/app/routes/reports.py - remover numero_ordem do serialize
+✓ backend/app/routes/dashboard.py - remover cálculos com numero_ordem
+✓ backend/app/routes/history.py - remover numero_ordem de filtros
+✓ backend/app/auth/token.py - corrigir datetime.utcnow()
+✓ backend/app/config.py - melhorar JWT_SECRET handling
+
+FRONTEND (5 arquivos):
+✓ frontend/src/App.tsx - adicionar rotas /login e /register
+✓ frontend/src/pages/ReportFormPage.tsx - remover numero_ordem, adicionar validação
+✓ frontend/src/pages/DashboardPage.tsx - adicionar loading/error handling
+✓ frontend/src/pages/HistoryPage.tsx - remover coluna numero_ordem
+✓ frontend/src/pages/LoginPage.tsx - usar navigate em vez de window.location.href
+
+CSS (1 arquivo):
+✓ frontend/src/styles.css - adicionar estilos para validação
+
+TOTAL DE BUGS CORRIGIDOS: 8
+TEMPO ESTIMADO: 1-2 horas (manual) ou 15 minutos (automático)
+
+================================================================================
