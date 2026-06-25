@@ -1,1 +1,1 @@
-# Prompt Master FastAPI backend package
+# Fluxo de equipamentos FastAPI backend package

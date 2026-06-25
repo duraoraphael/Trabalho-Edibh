@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ className = "" }: { className?: string }) {
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const name = localStorage.getItem("name");
@@ -14,8 +14,7 @@ function Sidebar() {
   };
 
   return (
-    <nav className="sidebar">
-      <div className="sidebar-brand">Prompt Master</div>
+    <nav className={`sidebar ${className}`.trim()}>
       {name && <div className="sidebar-user">{name}</div>}
       <NavLink to="/" end className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>Nova Ordem</NavLink>
       <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>Dashboard</NavLink>

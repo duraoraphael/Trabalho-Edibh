@@ -33,15 +33,15 @@ def list_history(
     search: str | None = None,
     user: dict = Depends(get_current_user),
 ):
-    filters = {}
+    filters: dict[str, str] = {}
     if gerencia:
-        filters["$filter"] = f"fields/Gerencia eq '{gerencia}'"
-    if start_date and end_date:
-        date_filter = f"fields/Data ge '{start_date.isoformat()}' and fields/Data le '{end_date.isoformat()}'"
-        filters["$filter"] = (filters.get("$filter", "") + f" and {date_filter}").strip()
+        filters["gerencia"] = gerencia
+    if start_date:
+        filters["start_date"] = start_date.isoformat()
+    if end_date:
+        filters["end_date"] = end_date.isoformat()
     if search:
-        search_filter = f"contains(fields/Instalacao,'{search}') or contains(fields/Sistema,'{search}') or contains(fields/Equipamento,'{search}')"
-        filters["$filter"] = (filters.get("$filter", "") + f" and {search_filter}").strip()
+        filters["search"] = search
 
     raw = service.list_reports(filters)
     items = raw.get("value", [])

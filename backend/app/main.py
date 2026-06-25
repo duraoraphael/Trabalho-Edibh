@@ -38,9 +38,9 @@ app.include_router(sharepoint_config, prefix="/api/settings", tags=["settings"])
 
 @app.on_event("startup")
 def startup_event() -> None:
-    logger.info("Starting Prompt Master backend")
+    logger.info("Starting Fluxo de equipamentos backend")
     AuditService().log_system_event("startup", "Backend service initialized")
 
 @app.get("/api/health", tags=["health"])
 def health_check() -> dict:
-    return {"status": "ok", "message": "Prompt Master backend is running"}
+    return {"status": "ok", "message": "Fluxo de equipamentos backend is running"}

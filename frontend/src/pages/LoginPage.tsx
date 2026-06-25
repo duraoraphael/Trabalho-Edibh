@@ -31,7 +31,7 @@ function LoginPage() {
   return (
     <div className="app-shell login-shell">
       <div className="login-card">
-        <h1>Prompt Master</h1>
+        <h1>Fluxo de equipamentos</h1>
         <p>Autentique-se para gerenciar ordens de serviço e relatórios técnicos.</p>
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>

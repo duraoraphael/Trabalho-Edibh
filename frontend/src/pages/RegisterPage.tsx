@@ -37,7 +37,7 @@ function RegisterPage() {
     <div className="app-shell login-shell">
       <div className="login-card">
         <h1>Cadastro</h1>
-        <p>Crie sua conta para acessar o sistema Prompt Master.</p>
+        <p>Crie sua conta para acessar o sistema Fluxo de equipamentos.</p>
         <form onSubmit={handleSubmit}>
           <label htmlFor="name">Nome</label>
           <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />

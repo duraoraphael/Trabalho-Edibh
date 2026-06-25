@@ -4,7 +4,7 @@ from pydantic import AnyHttpUrl
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Prompt Master"
+    APP_NAME: str = "Fluxo de equipamentos"
     ENVIRONMENT: str = "development"
     JWT_SECRET: str = "dev-secret"
     JWT_ALGORITHM: str = "HS256"
@@ -32,6 +32,8 @@ class Settings(BaseSettings):
         super().__init__(**data)
         if self.ENVIRONMENT == "production" and self.JWT_SECRET == "dev-secret":
             raise ValueError("JWT_SECRET deve ser definido via variável de ambiente em produção")
+        if self.ENVIRONMENT == "production" and not self.CONFIG_ENCRYPTION_KEY:
+            raise ValueError("CONFIG_ENCRYPTION_KEY deve ser definida em produção")
 
 
 settings = Settings()

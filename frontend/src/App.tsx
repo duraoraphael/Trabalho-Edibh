@@ -8,11 +8,12 @@ import RegisterPage from "./pages/RegisterPage";
 import SharePointConfigPage from "./pages/SharePointConfigPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import AppLayout from "./components/AppLayout";
-import Footer from './components/Footer';
+import Header from "./components/Header";
 
 function App() {
   return (
     <div className="App">
+      <Header />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -30,7 +31,6 @@ function App() {
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <Footer />
     </div>
   );
 }

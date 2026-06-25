@@ -15,6 +15,8 @@ def get_current_user(credentials: Annotated[Optional[HTTPAuthorizationCredential
         payload = verify_token(token)
     except Exception as exc:
         raise HTTPException(status_code=401, detail="Token inválido ou expirado") from exc
+    if payload.get("type") != "access":
+        raise HTTPException(status_code=401, detail="Tipo de token inválido")
     username = payload.get("sub")
     if not username:
         raise HTTPException(status_code=401, detail="Token inválido")
@@ -22,6 +24,8 @@ def get_current_user(credentials: Annotated[Optional[HTTPAuthorizationCredential
     user = UserService().get_user_by_email(username)
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    if not user.get("is_active", True):
+        raise HTTPException(status_code=403, detail="Usuário inativo")
     return user
 
 

@@ -31,6 +31,54 @@ html, body, #root{
   display:flex;
   flex-direction:column;
   min-height:100vh;
+  width:100%;
+}
+
+.site-header{
+  width:100%;
+  background:#ffffff;
+  border-bottom:2px solid #d6e8d9;
+  box-shadow:0 8px 18px rgba(8, 35, 20, 0.08);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+
+.site-header-inner{
+  max-width:1440px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.site-logo-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.site-logo-wrap.normatel img{
+  height:46px;
+  width:auto;
+  object-fit:contain;
+}
+
+.site-logo-wrap.petrobras img{
+  height:46px;
+  width:auto;
+  object-fit:contain;
+}
+
+.site-title{
+  color:#111111;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  font-weight:800;
+  font-size:1rem;
+  text-align:center;
 }
 
 .app-shell{
@@ -267,6 +315,8 @@ tbody td{
 .app-layout{
   display:flex;
   flex:1;
+  width:100%;
+  margin:0;
   align-items:flex-start;
 }
 
@@ -324,6 +374,8 @@ tbody td{
 .app-content{
   flex:1;
   min-width:0;
+  display:flex;
+  justify-content:center;
 }
 
 .loading-state{
@@ -339,6 +391,7 @@ tbody td{
 
   .sidebar{
     width:100%;
+    min-height:auto;
     flex-direction:row;
     overflow-x:auto;
     position:static;
@@ -362,40 +415,28 @@ tbody td{
   }
 }
 
-/* Footer styles */
-.app-footer{
-  margin-top:auto;
-  padding:24px 20px;
-  background:#ffffff;
-  color:var(--muted);
-  display:flex;
-  justify-content:center;
-  border-top:1px solid #e6eef0;
-  width:100%;
-}
-
-.footer-inner{
-  display:flex;
-  align-items:center;
-  gap:24px;
-  justify-content:center;
-}
-
-.footer-logo img{
-  height:70px;
-  object-fit:contain;
-  display:block;
-  max-width:100%;
-}
-
-.footer-sep{
-  color:var(--muted);
-  font-weight:700;
-  font-size:1.2rem;
-}
-
 /* Tablets (768px to 1024px) */
 @media (max-width:1024px){
+  .site-header-inner{
+    padding:10px 16px;
+  }
+
+  .app-layout{
+    width:100%;
+  }
+
+  .site-logo-wrap.normatel img{
+    height:38px;
+  }
+
+  .site-logo-wrap.petrobras img{
+    height:38px;
+  }
+
+  .site-title{
+    font-size:0.92rem;
+  }
+
   .app-shell{
     padding:20px;
   }
@@ -424,6 +465,28 @@ tbody td{
 
 /* Mobile (480px to 767px) */
 @media (max-width:768px){
+  .site-header-inner{
+    padding:10px 14px;
+    gap:8px;
+  }
+
+  .site-logo-wrap.normatel img{
+    height:30px;
+  }
+
+  .site-logo-wrap.petrobras{
+    padding:0;
+  }
+
+  .site-logo-wrap.petrobras img{
+    height:30px;
+  }
+
+  .site-title{
+    font-size:0.8rem;
+    letter-spacing:0.04em;
+  }
+
   body{
     font-size:15px;
   }
@@ -525,21 +588,30 @@ tbody td{
     margin-top:12px;
   }
   
-  .footer-inner{
-    gap:16px;
-  }
-  
-  .footer-logo img{
-    height:50px;
-  }
-  
-  .footer-sep{
-    font-size:1rem;
-  }
 }
 
 /* Small phones (< 480px) */
 @media (max-width:480px){
+  .site-header-inner{
+    padding:8px 10px;
+  }
+
+  .site-logo-wrap.normatel img{
+    height:24px;
+  }
+
+  .site-logo-wrap.petrobras{
+    padding:3px 6px;
+  }
+
+  .site-logo-wrap.petrobras img{
+    height:24px;
+  }
+
+  .site-title{
+    font-size:0.7rem;
+  }
+
   body{
     font-size:14px;
   }
@@ -637,17 +709,5 @@ tbody td{
     margin-top:10px;
   }
   
-  .footer-inner{
-    gap:12px;
-    flex-wrap:wrap;
-  }
-  
-  .footer-logo img{
-    height:40px;
-  }
-  
-  .footer-sep{
-    font-size:0.9rem;
-  }
 }
 

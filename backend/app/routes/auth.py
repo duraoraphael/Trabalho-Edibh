@@ -66,7 +66,7 @@ def create_user(payload: UserCreate, user: dict = Depends(require_role("Administ
         "id": result.get("id", 0),
         "name": payload.name,
         "email": payload.email,
-        "role": payload.role,
+        "role": result.get("role", "Operador"),
         "is_active": payload.is_active,
     }
 
@@ -81,7 +81,7 @@ def register_user(payload: UserCreate):
         "name": payload.name,
         "email": payload.email,
         "password": payload.password,
-        "role": payload.role or "Operador",
+        "role": "Operador",
         "is_active": payload.is_active,
     })
     audit.log_event(payload.email, "register_user", {"created_user": payload.email})
@@ -89,7 +89,7 @@ def register_user(payload: UserCreate):
         "id": result.get("id", 0),
         "name": payload.name,
         "email": payload.email,
-        "role": payload.role or "Operador",
+        "role": result.get("role", "Operador"),
         "is_active": payload.is_active,
     }
 
