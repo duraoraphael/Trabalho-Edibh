@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FiDatabase, FiGlobe, FiKey, FiLayers, FiLink2, FiLock, FiServer } from "react-icons/fi";
 import api, { getApiErrorMessage } from "../api";
 
 const initialState = {
@@ -111,7 +112,7 @@ function SharePointConfigPage() {
       <header className="app-header">
         <div>
           <h1>Configuração SharePoint</h1>
-          <p>Acesso restrito a administradores.</p>
+          <p className="subtitle">Acesso restrito a administradores para integração e sincronização segura.</p>
         </div>
         <div className={`status-badge ${status}`}>{status === "online" ? "Online" : "Offline"}</div>
       </header>
@@ -120,31 +121,52 @@ function SharePointConfigPage() {
         <form onSubmit={handleSave}>
           <div className="form-field">
             <label>URL SharePoint</label>
-            <input name="url_sharepoint" value={formState.url_sharepoint} onChange={handleChange} required />
+            <div className="input-with-icon">
+              <FiGlobe />
+              <input name="url_sharepoint" value={formState.url_sharepoint} onChange={handleChange} required />
+            </div>
           </div>
           <div className="form-field">
             <label>Tenant ID</label>
-            <input name="tenant_id" value={formState.tenant_id} onChange={handleChange} required />
+            <div className="input-with-icon">
+              <FiServer />
+              <input name="tenant_id" value={formState.tenant_id} onChange={handleChange} required />
+            </div>
           </div>
           <div className="form-field">
             <label>Client ID</label>
-            <input name="client_id" value={formState.client_id} onChange={handleChange} required />
+            <div className="input-with-icon">
+              <FiKey />
+              <input name="client_id" value={formState.client_id} onChange={handleChange} required />
+            </div>
           </div>
           <div className="form-field">
             <label>Client Secret {clientSecretSet && <span className="field-hint">(configurado — deixe em branco para manter)</span>}</label>
-            <input type="password" name="client_secret" value={formState.client_secret} onChange={handleChange} placeholder={clientSecretSet ? "••••••••" : ""} />
+            <div className="input-with-icon">
+              <FiLock />
+              <input type="password" name="client_secret" value={formState.client_secret} onChange={handleChange} placeholder={clientSecretSet ? "••••••••" : ""} />
+            </div>
           </div>
           <div className="form-field">
             <label>Nome da Lista</label>
-            <input name="list_name" value={formState.list_name} onChange={handleChange} required />
+            <div className="input-with-icon">
+              <FiLayers />
+              <input name="list_name" value={formState.list_name} onChange={handleChange} required />
+            </div>
           </div>
           <div className="form-field">
             <label>Nome da Biblioteca</label>
-            <input name="library_name" value={formState.library_name} onChange={handleChange} required />
+            <div className="input-with-icon">
+              <FiDatabase />
+              <input name="library_name" value={formState.library_name} onChange={handleChange} required />
+            </div>
           </div>
           <div className="form-field">
             <label>URL Graph API</label>
-            <input name="graph_api_url" value={formState.graph_api_url} onChange={handleChange} required />
+            <div className="input-with-icon">
+              <FiLink2 />
+              <input name="graph_api_url" value={formState.graph_api_url} onChange={handleChange} required />
+            </div>
           </div>
 
           <div className="button-row">
@@ -161,7 +183,7 @@ function SharePointConfigPage() {
       </div>
 
       <div className="table-card">
-        <table>
+        <table className="modern-table">
           <thead>
             <tr>
               <th>Data</th>

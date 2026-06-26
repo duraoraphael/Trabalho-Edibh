@@ -1,0 +1,521 @@
+================================================================================
+              GUIA COMPLETO: DEPLOY DO PROJETO EM PRODUÇÃO
+                    Trabalho Edibh - Fluxo de Equipamentos
+================================================================================
+
+Este guia explica como fazer o deploy (publicar) do seu projeto em servidores
+públicos para que outras pessoas possam acessar.
+
+================================================================================
+ÍNDICE
+================================================================================
+
+1. Visão Geral das Opções de Deploy
+2. OPÇÃO 1: Railway.app (RECOMENDADO - Mais Fácil)
+3. OPÇÃO 2: Vercel (Apenas Frontend)
+4. OPÇÃO 3: Heroku (Descontinuado, mas ainda funciona)
+5. OPÇÃO 4: Digital Ocean / AWS (Mais Avançado)
+6. Comparação de Plataformas
+7. Checklist Final
+
+================================================================================
+1. VISÃO GERAL - QUAL ESCOLHER?
+================================================================================
+
+Seu projeto tem 2 partes que precisam fazer deploy:
+
+┌─────────────────────────────────────────────────────────────┐
+│ FRONTEND (React)                                            │
+│ - Pode rodar em: Vercel, Netlify, Railway, GitHub Pages    │
+│ - Mais fácil e barato (geralmente GRÁTIS)                  │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ BACKEND (FastAPI Python)                                    │
+│ - Pode rodar em: Railway, Heroku, AWS, Digital Ocean       │
+│ - Precisa de servidor sempre ativo                         │
+│ - Custo maior (começa em ~$5/mês)                          │
+└─────────────────────────────────────────────────────────────┘
+
+RECOMENDAÇÃO PARA INICIANTES:
+  ✓ Frontend: Vercel (GRÁTIS, muito fácil)
+  ✓ Backend: Railway (Fácil, tem camada GRÁTIS)
+  
+RECOMENDAÇÃO PROFISSIONAL:
+  ✓ Frontend: Vercel ou Netlify
+  ✓ Backend: Railway ou Digital Ocean
+  ✓ Banco de dados: PostgreSQL na nuvem
+
+================================================================================
+2. OPÇÃO 1: RAILWAY.APP (RECOMENDADO)
+================================================================================
+
+Railway é a plataforma MAIS FÁCIL para fazer deploy do seu projeto completo.
+
+A. CADASTRO E PREPARAÇÃO
+
+1. Acesse: https://railway.app
+2. Clique em "Start a Project"
+3. Faça login com GitHub:
+   - Clique "GitHub"
+   - Autorize o Railway a acessar seus repositórios
+
+4. Você terá $5 GRÁTIS por mês (suficiente para testes)
+
+B. PREPARAR SEU REPOSITÓRIO
+
+1. Faça login no GitHub: https://github.com
+2. Crie um novo repositório:
+   - Nome: Trabalho-Edibh
+   - Descrição: Sistema de Fluxo de Equipamentos
+   - Selecione "Public" (ou Private)
+   - Clique "Create Repository"
+
+3. No seu computador, abra PowerShell na pasta raiz do projeto:
+   cd "c:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh"
+
+4. Inicialize o Git:
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/SEU_USUARIO/Trabalho-Edibh.git
+   git push -u origin main
+
+   (Substitua SEU_USUARIO pelo seu usuário do GitHub)
+
+C. FAZER DEPLOY DO BACKEND
+
+1. Volte ao Railway: https://railway.app
+2. Clique em "New Project"
+3. Selecione "Deploy from GitHub"
+4. Escolha seu repositório "Trabalho-Edibh"
+5. Railway vai detectar automaticamente que é um projeto Python
+
+6. Configure as variáveis de ambiente:
+   - Clique em "Variables"
+   - Adicione variáveis necessárias (database URL, etc.)
+   
+   Exemplo:
+   DATABASE_URL=postgresql://user:pass@host/db
+   SECRET_KEY=sua_chave_secreta
+
+7. Clique em "Deploy"
+8. O Backend estará acessível em: https://seu-projeto.railway.app
+
+D. FAZER DEPLOY DO FRONTEND
+
+1. Faça push da versão otimizada do Frontend:
+   cd frontend
+   npm run build
+
+2. Commit e push:
+   git add .
+   git commit -m "Build frontend"
+   git push
+
+3. O Railway vai detectar e fazer deploy automaticamente
+
+================================================================================
+3. OPÇÃO 2: VERCEL (APENAS FRONTEND - MAIS FÁCIL)
+================================================================================
+
+Vercel é a plataforma MAIS FÁCIL para fazer deploy de aplicações React.
+
+A. CADASTRO
+
+1. Acesse: https://vercel.com
+2. Clique "Sign Up"
+3. Faça login com GitHub
+
+B. FAZER DEPLOY
+
+1. Clique em "New Project"
+2. Selecione seu repositório "Trabalho-Edibh"
+3. Configure:
+   - Framework: Next.js (mesmo que use React puro)
+   - Root Directory: ./frontend
+   - Build Command: npm run build
+   - Output Directory: build
+
+4. Adicione variáveis de ambiente:
+   REACT_APP_API_URL=https://seu-backend.railway.app
+
+5. Clique "Deploy"
+
+6. Seu Frontend estará em: https://seu-projeto.vercel.app
+
+C. ATUALIZAR FRONTEND
+
+Sempre que você fazer mudanças:
+
+1. Commit as mudanças:
+   git add .
+   git commit -m "Descrição das mudanças"
+
+2. Push para GitHub:
+   git push
+
+3. Vercel faz deploy AUTOMATICAMENTE!
+
+================================================================================
+4. OPÇÃO 3: HEROKU (Descontinuado, mas ainda funciona)
+================================================================================
+
+Nota: Heroku descontinuou o plano grátis, mas ainda aceita cartão de crédito.
+
+A. ALTERNATIVA GRATUITA
+
+Se não quer pagar:
+1. Use Railway (Opção 1) - TEM camada grátis
+2. Use Render.com - Oferece camada grátis para Python
+
+B. SE QUISER USAR HEROKU MESMO ASSIM
+
+1. Crie conta em: https://www.heroku.com
+2. Instale Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli
+3. No PowerShell:
+   heroku login
+   heroku create seu-app-name
+   git push heroku main
+
+4. Configure variáveis:
+   heroku config:set DATABASE_URL=seu_banco_de_dados
+
+================================================================================
+5. OPÇÃO 4: DIGITAL OCEAN (Mais Profissional)
+================================================================================
+
+Digital Ocean oferece:
+✓ Droplets (VPS) a partir de $4/mês
+✓ App Platform (PaaS) a partir de $12/mês
+✓ Suporte profissional
+
+A. CRIAR UM DROPLET (VPS)
+
+1. Acesse: https://www.digitalocean.com
+2. Clique em "Create" > "Droplets"
+3. Selecione:
+   - OS: Ubuntu 22.04
+   - Tamanho: Basic ($4/mês)
+   - Region: São Paulo (para latência menor)
+
+4. Adicione SSH key (recomendado)
+5. Clique "Create Droplet"
+6. Você recebe um IP público do seu servidor
+
+B. CONECTAR E FAZER DEPLOY
+
+1. Conecte via SSH:
+   ssh root@SEU_IP
+
+2. Instale dependências:
+   apt update
+   apt install python3-pip python3-venv nodejs npm
+
+3. Clone seu repositório:
+   git clone https://github.com/seu_usuario/Trabalho-Edibh.git
+   cd Trabalho-Edibh
+
+4. Configure e inicie:
+   cd backend
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   
+   # Use Gunicorn para produção
+   pip install gunicorn
+   gunicorn app.main:app -w 4 -b 0.0.0.0:8000
+
+5. Configure Nginx como reverse proxy (avançado)
+
+6. Use PM2 ou Supervisor para manter o processo rodando
+
+================================================================================
+6. OPÇÃO 5: AWS (Amazon Web Services)
+================================================================================
+
+AWS oferece:
+✓ 1 ano grátis para novo usuário
+✓ Serviços profissionais
+✓ Escalabilidade ilimitada
+
+RECOMENDADO PARA:
+- Projetos grandes em produção
+- Alta disponibilidade
+- Muitos usuários
+
+COMO COMEÇAR:
+1. Acesse: https://aws.amazon.com
+2. Clique "Create AWS Account"
+3. Use EC2 para VPS ou Elastic Beanstalk para PaaS
+4. Use RDS para banco de dados gerenciado
+
+(Mais complexo que Railway, mas muito poderoso)
+
+================================================================================
+7. COMPARAÇÃO DE PLATAFORMAS
+================================================================================
+
+┌──────────────────┬──────────┬──────────┬────────────┬──────────────┐
+│ PLATAFORMA       │ PREÇO    │ FACILIDADE│ BACKEND   │ FRONTEND    │
+├──────────────────┼──────────┼──────────┼────────────┼──────────────┤
+│ Railway          │ Grátis   │ Muito fácil│ ✓ Python │ ✓ React    │
+│ Vercel           │ Grátis   │ Muito fácil│ ✗ (não)  │ ✓ React    │
+│ Render           │ Grátis   │ Fácil    │ ✓ Python │ ✓ React    │
+│ Heroku           │ Pago     │ Fácil    │ ✓ Python │ ✓ React    │
+│ Digital Ocean    │ $4-12/mês│ Médio    │ ✓ Python │ ✓ React    │
+│ AWS              │ Grátis*  │ Difícil  │ ✓ Python │ ✓ React    │
+│ Azure            │ Grátis*  │ Difícil  │ ✓ Python │ ✓ React    │
+└──────────────────┴──────────┴──────────┴────────────┴──────────────┘
+
+* Grátis incluso no plano free tier (limitado)
+
+MINHA RECOMENDAÇÃO:
+  1º LUGAR: Railway (tudo em um lugar, fácil, grátis)
+  2º LUGAR: Vercel + Railway (melhor desempenho)
+  3º LUGAR: Digital Ocean (quando Railway fica caro)
+
+================================================================================
+8. PASSO A PASSO RECOMENDADO (Railway + Vercel)
+================================================================================
+
+SEMANA 1: Deploy de Teste
+
+1. Crie conta GitHub:
+   https://github.com/signup
+
+2. Crie repositório público:
+   https://github.com/new
+   Nome: Trabalho-Edibh
+
+3. Push seu código:
+   cd projeto
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/SEU_USER/Trabalho-Edibh.git
+   git push -u origin main
+
+4. Deploy Backend no Railway:
+   a. Acesse https://railway.app
+   b. Conecte seu GitHub
+   c. Selecione repositório
+   d. Deploy (levará 2-3 minutos)
+   e. Copie a URL do backend (ex: https://seu-app.railway.app)
+
+5. Atualize URL da API no Frontend:
+   No arquivo: frontend/src/api.ts
+   Mude: const API_URL = "http://localhost:8000"
+   Para: const API_URL = "https://seu-app.railway.app"
+
+6. Commit:
+   git add .
+   git commit -m "Update API URL for production"
+   git push
+
+7. Deploy Frontend no Vercel:
+   a. Acesse https://vercel.com
+   b. Conecte seu GitHub
+   c. Selecione seu repositório
+   d. Configure: Root Directory = ./frontend
+   e. Deploy (levará 1-2 minutos)
+   f. Sua URL: https://seu-projeto.vercel.app
+
+8. PRONTO! Seu projeto está online! 🎉
+
+SEMANA 2: Configurações de Produção
+
+1. Configure banco de dados em produção
+2. Adicione variáveis de ambiente
+3. Teste todas as funcionalidades
+4. Configure CORS no Backend
+5. Configure domínio customizado (opcional)
+
+================================================================================
+9. VARIÁVEIS DE AMBIENTE
+================================================================================
+
+Seu backend pode precisar de configurações especiais em produção.
+
+Exemplos de variáveis:
+DATABASE_URL=postgresql://user:pass@host:5432/dbname
+SECRET_KEY=sua_chave_super_secreta_aqui
+DEBUG=False
+ALLOWED_HOSTS=seu-app.railway.app,seu-dominio.com
+
+No Railway, configure em:
+1. Project Settings > Variables
+2. Adicione cada variável
+3. Salve
+
+No Frontend, coloque variáveis em:
+arquivo: .env.production
+
+Exemplo:
+REACT_APP_API_URL=https://seu-backend.railway.app
+REACT_APP_ENV=production
+
+================================================================================
+10. DOMÍNIO CUSTOMIZADO
+================================================================================
+
+Seus usuários não vão querer acessar: seu-projeto.vercel.app
+
+Compre um domínio em:
+- godaddy.com
+- namecheap.com
+- registro.br (para domínios .com.br)
+
+Custo: ~R$30-50/ano
+
+Após comprar, configure em:
+1. Vercel: Project Settings > Domains > Add Domain
+2. Railway: Project Settings > Domains > Add Domain
+3. Configure DNS apontando para os servidores
+
+(Instruções detalhadas vêm com sua compra de domínio)
+
+================================================================================
+11. MONITORAMENTO E LOGS
+================================================================================
+
+Após fazer deploy, monitore se está funcionando:
+
+Railway:
+- Abra seu projeto no Dashboard
+- Veja logs em tempo real
+- Configure alertas de erro
+
+Vercel:
+- Vá para Deployments
+- Veja logs de build
+- Monitore Performance
+
+Google Analytics:
+- Configure em seu Frontend
+- Monitore usuários e comportamento
+
+================================================================================
+12. SEGURANÇA - CHECKLIST IMPORTANTE
+================================================================================
+
+Antes de lançar para produção:
+
+☑ Remova dados sensíveis do código (senhas, chaves)
+☑ Use variáveis de ambiente para tudo confidencial
+☑ Configure HTTPS (já vem automático no Railway/Vercel)
+☑ Adicione autenticação JWT no Backend
+☑ Configure CORS corretamente (permitir apenas seu domínio)
+☑ Valide todas as entradas do usuário
+☑ Configure rate limiting para prevenir abuso
+☑ Faça backup do banco de dados regularmente
+☑ Use senha forte no banco de dados
+☑ Mantenha dependências atualizadas
+
+Comando para encontrar vulnerabilidades:
+npm audit (no Frontend)
+pip audit (no Backend)
+
+================================================================================
+13. TROUBLESHOOTING - ERROS COMUNS
+================================================================================
+
+ERRO: "Application failed to start"
+Solução:
+  - Verifique logs no Railway Dashboard
+  - Confirme variáveis de ambiente
+  - Teste localmente antes de fazer push
+
+ERRO: "CORS error" no Frontend
+Solução:
+  - Configure CORS no Backend (app/main.py)
+  - Adicione sua URL do Frontend à lista permitida
+  - Exemplo: allow_origins=["https://seu-frontend.vercel.app"]
+
+ERRO: "Database connection refused"
+Solução:
+  - Verifique URL do banco de dados
+  - Confirme credenciais
+  - Se usar Railway Database, copie a STRING de conexão exata
+
+ERRO: "504 Gateway Timeout"
+Solução:
+  - Seu Backend é fraco demais
+  - Faça upgrade de plano
+  - Otimize código lento
+
+ERRO: "Build failed"
+Solução:
+  - Verifique npm ou pip install
+  - Confirme arquivo package.json/requirements.txt
+  - Veja os logs detalhados
+
+================================================================================
+14. PRÓXIMOS PASSOS APÓS DEPLOY
+================================================================================
+
+1. TESTE COMPLETO
+   ☑ Login funciona?
+   ☑ Criar registro funciona?
+   ☑ Download de PDF funciona?
+   ☑ Search funciona?
+   ☑ Menu navegação funciona?
+
+2. PERFORMANCE
+   ☑ Página carrega em menos de 3 segundos?
+   ☑ Requisições à API são rápidas?
+   ☑ Use Google PageSpeed Insights
+   ☑ Otimize imagens se necessário
+
+3. ANALYTICS
+   ☑ ConfigureGoogle Analytics
+   ☑ Monitore usuários
+   ☑ Acompanhe erros com Sentry
+
+4. MANUTENÇÃO
+   ☑ Faça commit regularmente
+   ☑ Mantenha dependências atualizadas
+   ☑ Monitore logs e alertas
+   ☑ Faça backups
+
+================================================================================
+15. RESUMO FINAL
+================================================================================
+
+OPÇÃO MAIS FÁCIL (Recomendado):
+1. Railway: Backend + dados
+2. Vercel: Frontend
+3. Tempo: 30 minutos
+4. Custo: GRÁTIS
+
+PASSOS:
+1. Código → GitHub
+2. GitHub → Railway (Backend)
+3. GitHub → Vercel (Frontend)
+4. Testar
+5. Pronto! 🎉
+
+LINKS IMPORTANTES:
+- Railway: https://railway.app
+- Vercel: https://vercel.com
+- GitHub: https://github.com
+- Seu app: https://seu-projeto.vercel.app
+
+PRÓXIMO:
+- Leia documentação oficial de cada plataforma
+- Configure domínio customizado
+- Implemente monitoramento
+- Comece a contar seus usuários! 📊
+
+================================================================================
+
+Pronto! Seu projeto pode estar online em menos de 1 hora! 🚀
+
+Dúvidas? Consulte:
+- Railway Docs: https://docs.railway.app
+- Vercel Docs: https://vercel.com/docs
+- FastAPI Docs: https://fastapi.tiangolo.com
+
+Boa sorte! 🎯
+

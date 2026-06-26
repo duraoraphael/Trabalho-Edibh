@@ -1,4 +1,5 @@
 import axios from "axios";
+import { emitAlert } from "./alerts";
 
 export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
@@ -46,8 +47,36 @@ api.interceptors.response.use(
       }
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
+      emitAlert({
+        type: "warning",
+        title: "Sessão expirada",
+        message: "Faça login novamente para continuar.",
+      });
       window.location.href = "/login";
     }
+
+    if (!error.response) {
+      emitAlert({
+        type: "error",
+        title: "Erro de rede",
+        message: "Não foi possível se comunicar com o servidor.",
+      });
+    } else if (error.response.status >= 500) {
+      emitAlert({
+        type: "error",
+        title: "Erro interno",
+        message: "O servidor encontrou um erro inesperado.",
+      });
+    }
+
+    console.error("API error", {
+      status: error.response?.status,
+      url: originalRequest?.url,
+      method: originalRequest?.method,
+      data: error.response?.data,
+      message: error.message,
+    });
+
     return Promise.reject(error);
   }
 );

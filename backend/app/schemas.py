@@ -1,6 +1,6 @@
 from datetime import date
 from pydantic import BaseModel, EmailStr, Field
-from typing import List, Optional
+from typing import Any, List, Optional
 
 
 class TokenResponse(BaseModel):
@@ -39,6 +39,10 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class MicrosoftLoginRequest(BaseModel):
+    id_token: str = Field(..., min_length=20)
+
+
 class ReportBase(BaseModel):
     instalacao: str = Field(..., title="Instalação")
     sistema: str = Field(..., title="Sistema")
@@ -46,6 +50,8 @@ class ReportBase(BaseModel):
     data: date = Field(..., title="Data")
     gerencia: str = Field(..., title="Gerência")
     situacao_identificada: str = Field(..., min_length=50, title="Situação Identificada")
+    status: str = Field(default="Em análise", title="Status")
+    custom_fields: Optional[dict[str, Any]] = Field(default_factory=dict)
 
 
 class ReportCreate(ReportBase):
@@ -59,6 +65,17 @@ class ReportUpdate(BaseModel):
     data: Optional[date]
     gerencia: Optional[str]
     situacao_identificada: Optional[str]
+    status: Optional[str]
+    custom_fields: Optional[dict[str, Any]] = None
+    motivo_edicao: Optional[str] = None
+
+
+class EvidenceItem(BaseModel):
+    id: str
+    name: str
+    web_url: str
+    size_bytes: Optional[int] = None
+    mime_type: Optional[str] = None
 
 
 class ReportResponse(ReportBase):
@@ -67,13 +84,79 @@ class ReportResponse(ReportBase):
     data_criacao: Optional[str]
     usuario_alteracao: Optional[str]
     data_alteracao: Optional[str]
-    evidencias: Optional[List[str]] = []
+    motivo_edicao: Optional[str] = None
+    evidencias: Optional[List[EvidenceItem]] = []
+
+
+class UserUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    telefone: Optional[str] = None
+    role: Optional[str] = None
+    is_active: Optional[bool] = None
+    password: Optional[str] = Field(default=None, min_length=8)
+
+
+class UserAdminResponse(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+    role: str
+    is_active: bool
+    telefone: Optional[str] = None
+    foto_url: Optional[str] = None
+    last_access: Optional[str] = None
+
+
+class ProfileUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    telefone: Optional[str] = None
+    foto_url: Optional[str] = None
+    current_password: Optional[str] = None
+    new_password: Optional[str] = Field(default=None, min_length=8)
+
+
+class ProfileResponse(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+    role: str
+    telefone: Optional[str] = None
+    foto_url: Optional[str] = None
+    last_access: Optional[str] = None
+
+
+class FormFieldOption(BaseModel):
+    label: str
+    value: str
+
+
+class FormFieldConfig(BaseModel):
+    id: str
+    label: str
+    type: str
+    placeholder: Optional[str] = ""
+    required: bool = False
+    readonly: bool = False
+    order: int = 0
+    options: List[FormFieldOption] = Field(default_factory=list)
+    validations: dict[str, Any] = Field(default_factory=dict)
+    visible_roles: List[str] = Field(default_factory=list)
+    editable_roles: List[str] = Field(default_factory=list)
+
+
+class FormConfigPayload(BaseModel):
+    fields: List[FormFieldConfig]
 
 
 class FileUploadResponse(BaseModel):
     file_id: str
     file_name: str
     web_url: str
+
+
+class FileUploadBatchResponse(BaseModel):
+    uploaded: List[EvidenceItem]
+    total: int
 
 
 class SharePointConfigRequest(BaseModel):

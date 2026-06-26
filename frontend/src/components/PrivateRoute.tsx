@@ -13,8 +13,12 @@ export function PrivateRoute({ children, requiredRole }: { children: ReactNode; 
   if (!getToken()) {
     return <Navigate to="/login" replace />;
   }
-  if (requiredRole && getRole() !== requiredRole) {
-    return <Navigate to="/" replace />;
+  if (requiredRole) {
+    const currentRole = getRole();
+    const acceptedRoles = requiredRole.split("|").map((role) => role.trim());
+    if (!currentRole || !acceptedRoles.includes(currentRole)) {
+      return <Navigate to="/" replace />;
+    }
   }
   return <>{children}</>;
 }

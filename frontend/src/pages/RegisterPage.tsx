@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FiAtSign, FiLock, FiUser } from "react-icons/fi";
 import { API_URL, getApiErrorMessage } from "../api";
+import { emitAlert } from "../alerts";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -23,11 +25,14 @@ function RegisterPage() {
         password,
       });
       setMessage("Conta criada com sucesso. Faça login.");
+      emitAlert({ type: "success", title: "Conta criada", message: "Cadastro realizado com sucesso." });
       setTimeout(() => {
         navigate("/login");
       }, 1200);
     } catch (err) {
-      setMessage(getApiErrorMessage(err, "Falha ao criar conta. Verifique os dados e tente novamente."));
+      const friendly = getApiErrorMessage(err, "Falha ao criar conta. Verifique os dados e tente novamente.");
+      setMessage(friendly);
+      emitAlert({ type: "error", title: "Erro ao criar conta", message: friendly });
     } finally {
       setLoading(false);
     }
@@ -40,11 +45,20 @@ function RegisterPage() {
         <p>Crie sua conta para acessar o sistema Fluxo de equipamentos.</p>
         <form onSubmit={handleSubmit}>
           <label htmlFor="name">Nome</label>
-          <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <div className="input-with-icon">
+            <FiUser />
+            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          </div>
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <div className="input-with-icon">
+            <FiAtSign />
+            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </div>
           <label htmlFor="password">Senha</label>
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
+          <div className="input-with-icon">
+            <FiLock />
+            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
+          </div>
           {message && <div className="form-error">{message}</div>}
           <button type="submit" className="primary-button" disabled={loading}>{loading ? "Criando..." : "Criar conta"}</button>
         </form>

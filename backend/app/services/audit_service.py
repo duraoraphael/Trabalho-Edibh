@@ -8,6 +8,7 @@ logger = logging.getLogger("prompt_master.audit")
 class AuditService:
     def log_event(self, user: str, action: str, details: dict[str, str], request: Request | None = None) -> None:
         event = {
+            "event": "audit",
             "user": user,
             "action": action,
             "details": details,
@@ -22,4 +23,11 @@ class AuditService:
         logger.info(event)
 
     def log_system_event(self, action: str, details: str) -> None:
-        logger.info({"system_action": action, "details": details, "timestamp": datetime.now(timezone.utc).isoformat()})
+        logger.info(
+            {
+                "event": "system",
+                "system_action": action,
+                "details": details,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
+        )

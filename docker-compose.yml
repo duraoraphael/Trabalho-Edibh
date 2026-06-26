@@ -11,6 +11,7 @@ services:
     environment:
       - JWT_SECRET=${JWT_SECRET:-your-secret-key-change-this}
       - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DATABASE_URL=${DATABASE_URL}
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
     volumes:
       - ./backend/app/data:/app/app/data

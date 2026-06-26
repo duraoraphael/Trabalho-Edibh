@@ -4,3 +4,5 @@ from app.routes.history import router as history
 from app.routes.dashboard import router as dashboard
 from app.routes.audit import router as audit
 from app.routes.sharepoint_config import router as sharepoint_config
+from app.routes.exports import router as exports
+from app.routes.form_manager import router as form_manager
