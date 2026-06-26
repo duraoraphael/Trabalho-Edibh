@@ -26,7 +26,6 @@ services:
           name: trabalho-edibh-db
           property: connectionString
 
-  - type: pserv
-    name: trabalho-edibh-db
-    env: postgres
+databases:
+  - name: trabalho-edibh-db
     plan: free
