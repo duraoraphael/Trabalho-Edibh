@@ -519,3 +519,48 @@ Dúvidas? Consulte:
 
 Boa sorte! 🎯
 
+================================================================================
+16. DEPLOY BACKEND NO RENDER (CONFIGURAÇÃO DESTE PROJETO)
+================================================================================
+
+Este projeto já está preparado para Render com:
+- render.yaml na raiz
+- backend/requirements.txt completo
+
+PASSO A PASSO:
+
+1. Faça push destas alterações para o GitHub:
+   git add .
+   git commit -m "config: backend pronto para Render"
+   git push
+
+2. No Render, clique em:
+   New > Blueprint
+
+3. Selecione o repositório Trabalho-Edibh.
+
+4. O Render criará automaticamente:
+   - Web Service: trabalho-edibh-backend
+   - PostgreSQL: trabalho-edibh-db
+
+5. Configure no serviço web (Environment):
+   - FRONTEND_URL = URL do frontend publicado
+   - CORS_ORIGINS = URLs permitidas separadas por vírgula
+     Exemplo:
+     https://seu-frontend.onrender.com,http://localhost:3000,http://localhost:3002
+
+6. As variáveis abaixo já ficam definidas pelo blueprint:
+   - ENVIRONMENT=production
+   - JWT_SECRET (gerado automaticamente)
+   - CONFIG_ENCRYPTION_KEY (gerado automaticamente)
+   - DATABASE_URL (vindo do Postgres do Render)
+
+7. Aguarde o deploy terminar e valide:
+   GET https://SUA-URL.onrender.com/api/health
+
+8. Se retornar status ok, backend pronto para apresentação.
+
+OBSERVAÇÃO IMPORTANTE:
+- Neste projeto, ENVIRONMENT=production exige JWT_SECRET e CONFIG_ENCRYPTION_KEY.
+- Sem essas variáveis, o backend não inicializa.
+
