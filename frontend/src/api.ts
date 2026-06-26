@@ -1,7 +1,14 @@
 import axios from "axios";
 import { emitAlert } from "./alerts";
 
-export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+function normalizeApiUrl(rawUrl: string | undefined): string {
+  const fallback = "http://localhost:8000/api";
+  const value = (rawUrl || fallback).trim().replace(/\/+$/, "");
+  if (value.endsWith("/api")) return value;
+  return `${value}/api`;
+}
+
+export const API_URL = normalizeApiUrl(process.env.REACT_APP_API_URL);
 
 const api = axios.create({ baseURL: API_URL });
 
