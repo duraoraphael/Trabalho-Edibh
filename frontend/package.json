@@ -2,6 +2,10 @@
   "name": "prompt-master-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  },
   "dependencies": {
     "@azure/msal-browser": "^4.3.0",
     "@types/node": "^20.11.0",
