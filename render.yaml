@@ -30,4 +30,3 @@ services:
     name: trabalho-edibh-db
     env: postgres
     plan: free
-    postgresMajorVersion: "16"
