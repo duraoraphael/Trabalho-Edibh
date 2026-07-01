@@ -24,7 +24,7 @@ function Sidebar({ className = "", collapsed, onToggle }: SidebarProps) {
   const name = localStorage.getItem("name");
 
   const navItems = [
-    { to: "/", label: "Nova Ordem", icon: FiFileText },
+    { to: "/", label: "Novo Fluxo de Equipamentos Críticos", icon: FiFileText },
     { to: "/dashboard", label: "Dashboard", icon: FiGrid },
     { to: "/history", label: "Histórico", icon: FiClock },
     { to: "/executive", label: "Executivo", icon: FiBarChart2 },

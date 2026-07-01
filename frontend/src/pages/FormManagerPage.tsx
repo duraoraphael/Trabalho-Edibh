@@ -119,7 +119,7 @@ function FormManagerPage() {
     try {
       const normalized = fields.map((f, i) => ({ ...f, order: i }));
       await api.put("/admin/form-fields", { fields: normalized });
-      emitAlert({ type: "success", title: "Configuração salva", message: "Formulário Nova Ordem atualizado." });
+      emitAlert({ type: "success", title: "Configuração salva", message: "Formulário Novo Fluxo de Equipamentos Críticos atualizado." });
     } catch (err) {
       emitAlert({ type: "error", title: "Falha", message: getApiErrorMessage(err, "Não foi possível salvar.") });
     } finally {
@@ -132,7 +132,7 @@ function FormManagerPage() {
       <header className="app-header">
         <div>
           <h1>Gerenciador de Formulários</h1>
-          <p className="subtitle">Edite os campos do formulário Nova Ordem. As alterações refletem imediatamente.</p>
+          <p className="subtitle">Edite os campos do formulário Novo Fluxo de Equipamentos Críticos. As alterações refletem imediatamente.</p>
         </div>
         <div className="button-row" style={{ alignSelf: "center" }}>
           <button className="secondary-button" type="button" onClick={addField}><FiPlus /> Novo Campo</button>

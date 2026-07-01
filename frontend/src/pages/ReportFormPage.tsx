@@ -320,7 +320,7 @@ function ReportFormPage() {
     <div className="app-shell">
       <div className="form-card">
         <div className="form-card-head">
-          <h1>{isEditing ? "Editar Ordem de Serviço" : "Nova Ordem de Serviço"}</h1>
+          <h1>{isEditing ? "Editar Fluxo de Equipamentos Críticos" : "Novo Fluxo de Equipamentos Críticos"}</h1>
           <p className="subtitle">Preencha os dados para registrar uma ocorrência técnica.</p>
         </div>
         <form onSubmit={handleSubmit}>
