@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FiBell, FiChevronDown, FiLogOut, FiSearch, FiUser } from "react-icons/fi";
+import normatelLogo from "../assets/normatel.png";
+import petrobrasLogo from "../assets/petrobras.svg";
 
 function Header() {
   const navigate = useNavigate();
@@ -36,10 +38,10 @@ function Header() {
         <div className="brand-cluster">
           <div className="logos-group">
             <div className="site-logo-wrap normatel">
-              <img src="/Imagens/Normatel%20Engenharia_BRANCO.png" alt="Normatel Engenharia" />
+              <img src={normatelLogo} alt="Normatel Engenharia" />
             </div>
             <div className="site-logo-wrap petrobras">
-              <img src="/Imagens/Logo%20petrobras%20Branca.svg" alt="Petrobras" />
+              <img src={petrobrasLogo} alt="Petrobras" />
             </div>
           </div>
           <div className="header-divider" aria-hidden="true" />

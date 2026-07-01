@@ -1714,9 +1714,11 @@ select {
   color: var(--text);
   border: 1px solid #dbe3ed;
   border-radius: 12px;
-  background: #ffffff;
+  background: #ffffff !important;
   padding: 12px 13px;
   transition: border-color 160ms ease, box-shadow 160ms ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 input:focus,
