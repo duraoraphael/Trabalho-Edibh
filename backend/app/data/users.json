@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Teste",
+    "email": "teste@example.com",
+    "role": "Operador",
+    "is_active": true,
+    "password_hash": "$pbkdf2-sha256$29000$UwohhFCKMSZkjNEag1BqzQ$aZhOzh.XKQd0tuIlu1aly0B2BDxuc5H9K.M4gVyhQik"
+  },
+  {
+    "id": 2,
+    "name": "Teste2",
+    "email": "teste2@example.com",
+    "role": "Operador",
+    "is_active": true,
+    "password_hash": "$pbkdf2-sha256$29000$txbC.D9H6D0nZEyJsfY.hw$9Y1DtlMy1kOX8jmi7pPHUqjpmuAL6Ui0uodqEYl0EIw"
+  }
+]

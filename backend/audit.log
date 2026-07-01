@@ -1,0 +1,151 @@
+2026-06-19 09:58:27,913 INFO Starting Prompt Master backend
+2026-06-19 09:58:27,913 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T12:58:27.913605Z'}
+2026-06-19 09:58:27,921 INFO Starting Prompt Master backend
+2026-06-19 09:58:27,921 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T12:58:27.921911Z'}
+2026-06-19 09:58:27,922 INFO Starting Prompt Master backend
+2026-06-19 09:58:27,922 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T12:58:27.922521Z'}
+2026-06-19 09:58:36,022 INFO Starting Prompt Master backend
+2026-06-19 09:58:36,022 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T12:58:36.022478Z'}
+2026-06-19 10:11:18,618 INFO Starting Prompt Master backend
+2026-06-19 10:11:18,618 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:11:18.618462Z'}
+2026-06-19 10:11:18,656 INFO Starting Prompt Master backend
+2026-06-19 10:11:18,656 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:11:18.656413Z'}
+2026-06-19 10:11:28,237 INFO Starting Prompt Master backend
+2026-06-19 10:11:28,237 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:11:28.237071Z'}
+2026-06-19 10:12:37,434 INFO Starting Prompt Master backend
+2026-06-19 10:12:37,434 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:12:37.434750Z'}
+2026-06-19 10:14:08,365 INFO {'user': 'teste2@example.com', 'action': 'register_user', 'details': {'created_user': 'teste2@example.com'}, 'timestamp': '2026-06-19T13:14:08.365044Z'}
+2026-06-19 10:14:08,400 INFO {'user': 'teste2@example.com', 'action': 'login', 'details': {'status': 'success'}, 'timestamp': '2026-06-19T13:14:08.400555Z'}
+2026-06-19 10:17:25,266 INFO Starting Prompt Master backend
+2026-06-19 10:17:25,266 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:17:25.266139Z'}
+2026-06-19 10:18:01,150 INFO Starting Prompt Master backend
+2026-06-19 10:18:01,150 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:18:01.150644Z'}
+2026-06-19 10:18:26,378 INFO Starting Prompt Master backend
+2026-06-19 10:18:26,378 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T13:18:26.378459Z'}
+2026-06-19 11:14:42,870 INFO Starting Prompt Master backend
+2026-06-19 11:14:42,870 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:14:42.870156Z'}
+2026-06-19 11:14:43,744 INFO Starting Prompt Master backend
+2026-06-19 11:14:43,744 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:14:43.744459Z'}
+2026-06-19 11:15:54,175 INFO Starting Prompt Master backend
+2026-06-19 11:15:54,175 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:15:54.175238Z'}
+2026-06-19 11:15:54,183 INFO Starting Prompt Master backend
+2026-06-19 11:15:54,185 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:15:54.185078Z'}
+2026-06-19 11:15:54,829 INFO Starting Prompt Master backend
+2026-06-19 11:15:54,829 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:15:54.829737Z'}
+2026-06-19 11:15:54,831 INFO Starting Prompt Master backend
+2026-06-19 11:15:54,831 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:15:54.831737Z'}
+2026-06-19 11:28:24,354 INFO {'user': 'anon@local', 'action': 'create_report', 'details': {'report_id': '1'}, 'timestamp': '2026-06-19T14:28:24.353756Z'}
+2026-06-19 11:28:24,373 INFO {'user': 'anon@local', 'action': 'create_report', 'details': {'report_id': '2'}, 'timestamp': '2026-06-19T14:28:24.373038Z'}
+2026-06-19 11:50:14,178 INFO Starting Prompt Master backend
+2026-06-19 11:50:14,178 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:50:14.178272Z'}
+2026-06-19 11:50:14,183 INFO Starting Prompt Master backend
+2026-06-19 11:50:14,183 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:50:14.183772Z'}
+2026-06-19 11:50:14,227 INFO Starting Prompt Master backend
+2026-06-19 11:50:14,228 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-19T14:50:14.228842Z'}
+2026-06-26 08:05:47,074 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:05:47,074 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:05:47.074974+00:00'}
+2026-06-26 08:11:05,313 INFO {'user': 'teste@dev.com', 'action': 'register_user', 'details': {'created_user': 'teste@dev.com'}, 'timestamp': '2026-06-26T11:11:05.313436+00:00'}
+2026-06-26 08:11:05,572 INFO {'user': 'teste@dev.com', 'action': 'login', 'details': {'status': 'success'}, 'timestamp': '2026-06-26T11:11:05.572404+00:00'}
+2026-06-26 08:11:26,497 INFO {'user': 'teste@dev.com', 'action': 'create_report', 'details': {'report_id': '2'}, 'timestamp': '2026-06-26T11:11:26.497072+00:00'}
+2026-06-26 08:20:59,877 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:20:59,878 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:20:59.878341+00:00'}
+2026-06-26 08:21:07,187 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:21:07,187 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:21:07.187358+00:00'}
+2026-06-26 08:21:08,216 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:21:08,216 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:21:08.216067+00:00'}
+2026-06-26 08:21:53,707 INFO Export directory: C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports
+2026-06-26 08:22:09,447 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:22:09,448 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:22:09.448663+00:00'}
+2026-06-26 08:22:19,784 INFO Export directory: C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports
+2026-06-26 08:22:23,734 INFO Export directory: C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports
+2026-06-26 08:22:23,734 INFO Todos os dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_082223.json
+2026-06-26 08:22:49,522 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:22:49,522 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:22:49.522432+00:00'}
+2026-06-26 08:22:53,857 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:22:53,857 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:22:53.857947+00:00'}
+2026-06-26 08:23:01,252 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:23:01,253 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:23:01.253157+00:00'}
+2026-06-26 08:23:06,215 INFO Export directory: C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports
+2026-06-26 08:23:06,216 INFO Todos os dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_082306.json
+2026-06-26 08:23:25,869 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:23:25,869 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:23:25.869401+00:00'}
+2026-06-26 08:23:26,318 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:23:26,318 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:23:26.318640+00:00'}
+2026-06-26 08:23:27,266 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:23:27,266 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:23:27.266580+00:00'}
+2026-06-26 08:29:00,139 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:29:00,139 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:29:00.139674+00:00'}
+2026-06-26 08:30:34,721 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:30:34,721 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:30:34.721775+00:00'}
+2026-06-26 08:31:36,523 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:31:36,523 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:31:36.523902+00:00'}
+2026-06-26 08:42:29,094 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:42:29,094 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:42:29.094690+00:00'}
+2026-06-26 08:42:29,096 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:42:29,096 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:42:29.096691+00:00'}
+2026-06-26 08:42:29,130 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:42:29,130 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:42:29,130 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:42:29.130587+00:00'}
+2026-06-26 08:42:29,130 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:42:29.130587+00:00'}
+2026-06-26 08:42:29,254 ERROR Erro ao buscar relatórios: coluna "created_at" não existe
+LINE 3: ...          situacao_identificada, usuario_criacao, created_at
+                                                             ^
+2026-06-26 08:42:29,255 INFO Dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_084229.json
+2026-06-26 08:42:29,258 INFO {'user': 'teste@dev.com', 'action': 'login', 'details': {'status': 'success'}, 'timestamp': '2026-06-26T11:42:29.258124+00:00'}
+2026-06-26 08:42:43,363 ERROR Erro ao buscar relatórios: coluna "created_at" não existe
+LINE 3: ...          situacao_identificada, usuario_criacao, created_at
+                                                             ^
+2026-06-26 08:42:43,364 INFO Dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_084243.json
+2026-06-26 08:42:47,602 ERROR Erro ao buscar relatórios: coluna "created_at" não existe
+LINE 3: ...          situacao_identificada, usuario_criacao, created_at
+                                                             ^
+2026-06-26 08:42:47,603 INFO Dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_084247.json
+2026-06-26 08:43:33,670 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:43:33,670 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:43:33.670360+00:00'}
+2026-06-26 08:43:33,678 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:43:33,678 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:43:33.678515+00:00'}
+2026-06-26 08:43:39,467 ERROR Erro ao buscar relatórios: coluna "created_at" não existe
+LINE 3: ...          situacao_identificada, usuario_criacao, created_at
+                                                             ^
+2026-06-26 08:43:39,468 INFO Dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_084339.json
+2026-06-26 08:43:45,564 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:43:45,564 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:43:45.564319+00:00'}
+2026-06-26 08:43:46,514 INFO Starting Fluxo de equipamentos backend
+2026-06-26 08:43:46,515 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T11:43:46.515493+00:00'}
+2026-06-26 08:44:04,336 ERROR Erro ao buscar relatórios: coluna "created_at" não existe
+LINE 3: ...          situacao_identificada, usuario_criacao, created_at
+                                                             ^
+2026-06-26 08:44:04,337 INFO Dados exportados para C:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\backend\exports\all_data_20260626_084404.json
+2026-06-26 09:13:20,608 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:20,609 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:20.609375+00:00'}
+2026-06-26 09:13:20,609 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:20,609 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:20.609375+00:00'}
+2026-06-26 09:13:20,625 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:20,625 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:20.625013+00:00'}
+2026-06-26 09:13:20,630 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:20,630 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:20.630887+00:00'}
+2026-06-26 09:13:21,784 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:21,784 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:21.784679+00:00'}
+2026-06-26 09:13:21,791 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:21,791 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:21.791194+00:00'}
+2026-06-26 09:13:21,882 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:21,882 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:21.882927+00:00'}
+2026-06-26 09:13:21,920 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:21,920 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:21.920115+00:00'}
+2026-06-26 09:13:32,287 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:32,287 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:32.287649+00:00'}
+2026-06-26 09:13:32,463 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:32,463 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:32.463300+00:00'}
+2026-06-26 09:13:32,463 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:32,463 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:32.463300+00:00'}
+2026-06-26 09:13:32,468 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:32,468 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:32.468324+00:00'}
+2026-06-26 09:13:33,461 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:33,461 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:33.461295+00:00'}
+2026-06-26 09:13:33,602 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:33,602 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:33.602814+00:00'}
+2026-06-26 09:13:33,627 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:33,627 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:33.627828+00:00'}
+2026-06-26 09:13:33,643 INFO Starting Fluxo de equipamentos backend
+2026-06-26 09:13:33,643 INFO {'system_action': 'startup', 'details': 'Backend service initialized', 'timestamp': '2026-06-26T12:13:33.643572+00:00'}
+2026-06-26 09:15:55,897 INFO {'user': 'teste@dev.com', 'action': 'login', 'details': {'status': 'success'}, 'timestamp': '2026-06-26T12:15:55.897285+00:00'}

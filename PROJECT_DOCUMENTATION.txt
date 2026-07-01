@@ -1,0 +1,117 @@
+PROMPT MASTER - DOCUMENTAÇÃO DO PROJETO
+
+VISÃO GERAL
+
+Prompt Master é um sistema corporativo de gestão de ordens de serviço e relatórios técnicos com interface web. O backend foi desenvolvido em Python com FastAPI e o frontend em React com TypeScript. O projeto suporta armazenamento local para testes rápidos e foi pensado para futura integração com Microsoft SharePoint / Microsoft Graph.
+
+ARQUITETURA GERAL
+
+Backend
+- Linguagem: Python 3.12+
+- Framework: FastAPI
+- Servidor ASGI: Uvicorn
+- Validação: Pydantic 2.x e pydantic-settings
+- Autenticação: JWT (python-jose)
+- Hash de senhas: passlib com suporte a bcrypt
+- PDF: reportlab
+- Upload de arquivos multipart: python-multipart
+- Configuração de ambiente: python-dotenv
+- Armazenamento local de teste: JSON em `backend/app/data/`
+
+Frontend
+- Biblioteca: React 18
+- Tipo: TypeScript
+- Roteamento: react-router-dom v6
+- Requisições HTTP: axios
+- Build / dev server: react-scripts
+- Estilos: arquivo CSS global em `frontend/src/styles.css`
+- Estrutura de páginas: formulário de relatório, dashboard, histórico, dashboard executivo
+
+BACKEND - O QUE FOI FEITO
+
+Estrutura e componentes principais
+- `backend/app/main.py`: inicializa o app FastAPI, configura CORS e registra rotas.
+- `backend/app/config.py`: carrega variáveis de ambiente usando pydantic-settings. Contém definições de valores padrão para modo de desenvolvimento e configurações SharePoint.
+- `backend/app/schemas.py`: define modelos de dados Pydantic para validação de requisições e respostas.
+- `backend/app/routes/`: pasta com os módulos de rotas por domínio funcional.
+- `backend/app/services/`: pasta com a lógica de negócio e integração local/SharePoint.
+- `backend/app/auth/`: gerencia login, criação de token, validação de usuário e dependências de autorização.
+- `backend/app/data/local_storage.py`: implementação de leitura e escrita de arquivos JSON para persistência local de usuários e relatórios.
+
+Funcionalidades implementadas
+- Autenticação JWT com emoções de refresh token.
+- Registro de usuário e login com hash de senha seguro.
+- Uso de dependências FastAPI para obter usuário atual e proteger rotas.
+- CRUD de relatórios técnicos com modelo de dados validado.
+- Geração de número de ordem automática no backend para novos relatórios.
+- Rotas de dashboard e histórico para obter resumos e lista de registros.
+- Auditoria de eventos de sistema e de usuário.
+- Fallback a armazenamento local sem necessidade de SharePoint configurado.
+
+Fluxos importantes
+- `POST /api/auth/register`: cadastro de usuário.
+- `POST /api/auth/login`: autenticação e emissão de token.
+- `POST /api/reports`: criação de relatório técnico com auto-numeração.
+- `GET /api/dashboard/summary`: resumo para dashboard gerencial.
+- `GET /api/dashboard/executive`: informações de dashboard executivo.
+- `GET /api/history`: histórico de relatórios.
+
+Pontos técnicos relevantes
+- A API foi preparada para uso com SharePoint, mas também suporta desenvolvimento local sem credenciais SharePoint.
+- A validação de dados foi realizada com Pydantic e campos opcionais foram configurados para permitir flexibilidade de payload.
+- Configurações sensíveis são carregadas via `.env`.
+
+FRONTEND - O QUE FOI FEITO
+
+Estrutura e componentes principais
+- `frontend/src/App.tsx`: define as rotas do aplicativo e inclui o `Footer` global.
+- `frontend/src/pages/ReportFormPage.tsx`: página principal com formulário de relatório, onde o campo de número de ordem foi removido do formulário para ser gerado pelo backend.
+- `frontend/src/pages/DashboardPage.tsx`: painel gerencial com botão "Nova Ordem" e navegação de retorno.
+- `frontend/src/pages/HistoryPage.tsx`: página de histórico de relatórios.
+- `frontend/src/pages/ExecutiveDashboardPage.tsx`: página de indicadores executivos.
+- `frontend/src/components/Footer.tsx`: footer com logos corporativas e separador visual.
+- `frontend/src/styles.css`: estilos globais com responsividade e ajuste de layout.
+
+Funcionalidades implementadas
+- Navegação SPA entre páginas de relatório, dashboard, histórico e executivo.
+- Formulário de relatório responsivo com rótulos acima dos campos e validação visual básica.
+- Footer branco com imagens maiores e layout responsivo.
+- Estilos responsivos para desktop, tablet e mobile.
+- Componente de botão estilizado com comportamento hover.
+
+Pontos técnicos relevantes
+- O projeto front-end está configurado com `react-scripts` e usa `react-router-dom` para rotas.
+- O footer utiliza imagens estáticas armazenadas em `frontend/public/Imagens/`.
+- Os estilos globais atendem o layout responsivo sem dependência de framework CSS adicional.
+
+EXECUÇÃO DO PROJETO
+
+Backend
+1. Abra o terminal em `backend/`.
+2. Ative o ambiente virtual:
+   - `python -m venv .venv`
+   - `.\.venv\Scripts\Activate.ps1`
+3. Instale dependências:
+   - `pip install -r requirements.txt`
+4. Execute:
+   - `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
+
+Frontend
+1. Abra o terminal em `frontend/`.
+2. Instale dependências:
+   - `npm install`
+3. Execute:
+   - `npm start`
+
+OBSERVAÇÕES ADICIONAIS
+
+- O backend aceita modo local sem SharePoint, mas a integração completa com SharePoint exige configuração de variáveis de ambiente e credenciais de Azure AD.
+- O frontend foi ajustado para ser responsivo e com melhor leitura em dispositivos móveis.
+- A documentação está em arquivo texto para uso corporativo e pode ser adaptada para PDF ou apresentação.
+
+RECOMENDAÇÕES FUTURAS
+
+- Adicionar testes automatizados para backend e frontend.
+- Implementar upload de evidências no frontend com pré-visualização.
+- Finalizar integração de autenticação e autorização mais granular.
+- Adotar um sistema de build/CI para deploy.

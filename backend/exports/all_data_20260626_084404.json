@@ -1,0 +1,30 @@
+{
+  "exported_at": "2026-06-26T08:44:04.273215",
+  "users": [
+    {
+      "id": 1,
+      "name": "Teste",
+      "email": "teste@example.com",
+      "role": "Operador",
+      "is_active": true,
+      "created_at": "2026-06-26 07:52:40.310441-03:00"
+    },
+    {
+      "id": 2,
+      "name": "Teste2",
+      "email": "teste2@example.com",
+      "role": "Operador",
+      "is_active": true,
+      "created_at": "2026-06-26 07:52:40.341506-03:00"
+    },
+    {
+      "id": 3,
+      "name": "Teste Dev",
+      "email": "teste@dev.com",
+      "role": "Operador",
+      "is_active": true,
+      "created_at": "2026-06-26 08:11:05.310939-03:00"
+    }
+  ],
+  "reports": []
+}

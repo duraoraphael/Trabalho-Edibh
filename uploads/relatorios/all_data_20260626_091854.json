@@ -1,0 +1,45 @@
+{
+  "exported_at": "2026-06-26T09:18:53.953314",
+  "users": [
+    {
+      "id": 1,
+      "name": "Teste",
+      "email": "teste@example.com",
+      "role": "Operador",
+      "is_active": true,
+      "created_at": "2026-06-26 07:52:40.310441-03:00"
+    },
+    {
+      "id": 2,
+      "name": "Teste2",
+      "email": "teste2@example.com",
+      "role": "Operador",
+      "is_active": true,
+      "created_at": "2026-06-26 07:52:40.341506-03:00"
+    },
+    {
+      "id": 3,
+      "name": "Teste Dev",
+      "email": "teste@dev.com",
+      "role": "Operador",
+      "is_active": true,
+      "created_at": "2026-06-26 08:11:05.310939-03:00"
+    }
+  ],
+  "reports": [
+    {
+      "id": 2,
+      "instalacao": "Plataforma A",
+      "sistema": "Sistema SAP",
+      "equipamento": "Servidor DB-01",
+      "data": "2026-06-26",
+      "gerencia": "TI",
+      "situacao_identificada": "Erro na replicacao de dados detectado apos atualizacao de patch no servidor principal de producao",
+      "usuario_criacao": "teste@dev.com",
+      "data_criacao": "2026-06-26 11:11:26.365437-03:00",
+      "usuario_alteracao": null,
+      "data_alteracao": null,
+      "evidencias": "[]"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+# Fluxo de equipamentos FastAPI backend package

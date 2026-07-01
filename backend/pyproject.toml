@@ -1,0 +1,21 @@
+[project]
+name = "prompt-master-sistema"
+version = "0.1.0"
+description = "Sistema de gestão de ordens de serviço com SharePoint e dashboards corporativos"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.110.0",
+    "uvicorn[standard]==0.23.2",
+    "python-jose[cryptography]==3.3.0",
+    "passlib[pbkdf2]==1.7.4",
+    "psycopg[binary]==3.2.9",
+    "requests==2.31.0",
+    "python-dotenv==1.0.0",
+    "reportlab==4.0.0",
+    "python-multipart==0.0.6",
+    "pydantic==2.8.0",
+    "supabase==2.9.1"
+]
+
+[tool.poetry]
+# Optional if using Poetry

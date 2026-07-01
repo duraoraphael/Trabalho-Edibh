@@ -1,0 +1,218 @@
+{
+  "fields": [
+    {
+      "id": "instalacao",
+      "label": "Instalação",
+      "type": "texto",
+      "placeholder": "Ex: Plataforma A",
+      "required": true,
+      "readonly": false,
+      "order": 0,
+      "options": [
+        {
+          "label": "SIm",
+          "value": "opc_1782826755403"
+        }
+      ],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    },
+    {
+      "id": "sistema",
+      "label": "Sistema",
+      "type": "texto",
+      "placeholder": "Ex: SAP",
+      "required": true,
+      "readonly": false,
+      "order": 1,
+      "options": [],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    },
+    {
+      "id": "equipamento",
+      "label": "Equipamento",
+      "type": "select",
+      "placeholder": "Ex: Servidor DB-01",
+      "required": true,
+      "readonly": false,
+      "order": 2,
+      "options": [
+        {
+          "label": "def",
+          "value": "DEF"
+        }
+      ],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    },
+    {
+      "id": "data",
+      "label": "Data",
+      "type": "data",
+      "placeholder": "dd/mm/aaaa",
+      "required": true,
+      "readonly": false,
+      "order": 3,
+      "options": [],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    },
+    {
+      "id": "gerencia",
+      "label": "Gerência",
+      "type": "texto",
+      "placeholder": "Ex: Manutenção",
+      "required": true,
+      "readonly": false,
+      "order": 4,
+      "options": [],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    },
+    {
+      "id": "situacao_identificada",
+      "label": "Situação Identificada",
+      "type": "textarea",
+      "placeholder": "Descreva em no mínimo 50 caracteres...",
+      "required": true,
+      "readonly": false,
+      "order": 5,
+      "options": [],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    },
+    {
+      "id": "status",
+      "label": "Status",
+      "type": "select",
+      "placeholder": "",
+      "required": true,
+      "readonly": true,
+      "order": 6,
+      "options": [
+        {
+          "label": "Em análise",
+          "value": "Em análise"
+        },
+        {
+          "label": "Aprovado",
+          "value": "Aprovado"
+        },
+        {
+          "label": "Reprovado",
+          "value": "Reprovado"
+        }
+      ],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor"
+      ]
+    },
+    {
+      "id": "evidencias",
+      "label": "Evidências da Falha",
+      "type": "upload",
+      "placeholder": "",
+      "required": false,
+      "readonly": false,
+      "order": 7,
+      "options": [],
+      "validations": {},
+      "visible_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador",
+        "Visualizador"
+      ],
+      "editable_roles": [
+        "Administrador",
+        "Gerente",
+        "Supervisor",
+        "Operador"
+      ]
+    }
+  ]
+}

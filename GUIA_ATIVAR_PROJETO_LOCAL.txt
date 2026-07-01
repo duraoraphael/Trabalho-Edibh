@@ -1,0 +1,278 @@
+================================================================================
+              GUIA COMPLETO: ATIVAÇÃO LOCAL DO PROJETO
+                    Trabalho Edibh - Fluxo de Equipamentos
+================================================================================
+
+Este guia explica como ativar o Backend (FastAPI) e Frontend (React) para testes
+locais no seu computador.
+
+================================================================================
+1. PRÉ-REQUISITOS
+================================================================================
+
+Antes de começar, verifique se você tem instalado:
+
+✓ Python 3.8+ (para Backend)
+✓ Node.js 14+ e npm (para Frontend)
+✓ Git (opcional, para controle de versão)
+
+Para verificar as versões instaladas, abra o PowerShell e digite:
+  - python --version
+  - node --version
+  - npm --version
+
+Se algum deles não estiver instalado, baixe em:
+  - Python: https://www.python.org/downloads/
+  - Node.js: https://nodejs.org/ (instale a versão LTS)
+
+================================================================================
+2. PREPARAÇÃO INICIAL (Primeira Execução)
+================================================================================
+
+A. BACKEND - Criar Ambiente Virtual e Instalar Dependências
+
+1. Abra o PowerShell como Administrador
+2. Navegue até a pasta do projeto:
+   cd "c:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh"
+
+3. Entre na pasta backend:
+   cd backend
+
+4. Crie o ambiente virtual:
+   python -m venv ..\.venv
+
+5. Ative o ambiente virtual:
+   ..\..\.venv\Scripts\Activate.ps1
+   
+   (Você deve ver "(.venv)" no início do prompt)
+
+6. Instale as dependências:
+   pip install -r requirements.txt
+
+7. Verifique se a instalação foi bem-sucedida:
+   pip list
+
+B. FRONTEND - Instalar Dependências
+
+1. Abra outro PowerShell (mantendo o backend rodando)
+2. Navegue até a pasta do projeto:
+   cd "c:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\frontend"
+
+3. Instale as dependências:
+   npm install
+
+4. Aguarde a conclusão (pode levar alguns minutos)
+
+================================================================================
+3. MÉTODO RÁPIDO (Windows - Usando Scripts)
+================================================================================
+
+Se você está no Windows, existem scripts prontos para ativar tudo:
+
+A. BACKEND + FRONTEND (Tudo automatizado)
+
+1. Abra o PowerShell no diretório raiz do projeto:
+   cd "c:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh"
+
+2. Execute o script Start Local:
+   .\START_LOCAL.bat
+
+   Isso vai:
+   
+   ✓ Ativar o ambiente virtual do Python
+   ✓ Iniciar o servidor FastAPI na porta 8000
+   ✓ Abrir o Frontend em outra aba/janela
+
+3. Se o script não funcionar, use o script Shell:
+   .\START_LOCAL.sh
+
+================================================================================
+4. MÉTODO MANUAL (Passo a Passo)
+================================================================================
+
+Se preferir controlar tudo manualmente:
+
+A. ATIVAR O BACKEND
+
+1. Abra um PowerShell
+2. Navegue até o diretório raiz:
+   cd "c:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh"
+
+3. Entre na pasta backend:
+   cd backend
+
+4. Ative o ambiente virtual:
+   ..\..\.venv\Scripts\Activate.ps1
+
+5. Inicie o servidor FastAPI:
+   python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+   Você deve ver:
+   ✓ Uvicorn running on http://0.0.0.0:8000
+   ✓ Application startup complete
+
+6. O Backend está rodando na porta 8000
+   Acesse: http://localhost:8000/docs (documentação Swagger)
+
+B. ATIVAR O FRONTEND
+
+1. Abra OUTRO PowerShell (não feche o do Backend)
+2. Navegue até a pasta frontend:
+   cd "c:\Users\durao\Documents\Trabalho edibhh\Trabalho Edibh\frontend"
+
+3. Inicie o servidor de desenvolvimento:
+   npm start
+
+   Você deve ver:
+   ✓ Compiled successfully
+   ✓ webpack compiled with warnings/errors...
+
+4. O Frontend vai abrir automaticamente em:
+   http://localhost:3000
+
+   Se não abrir, acesse manualmente no seu navegador
+
+================================================================================
+5. VALIDAÇÃO - Verifique se Está Funcionando
+================================================================================
+
+A. BACKEND - Teste de Conexão
+
+1. Abra seu navegador
+2. Acesse: http://localhost:8000/docs
+3. Você deve ver a documentação Swagger do FastAPI
+
+Testes rápidos:
+- Clique em "Try it out" em qualquer endpoint
+- Execute uma requisição GET simples
+- Você deve receber uma resposta (mesmo que seja erro 401, é normal)
+
+B. FRONTEND - Teste de Carregamento
+
+1. Acesse: http://localhost:3000
+2. Você deve ver a página de LOGIN do Trabalho Edibh
+3. Tente fazer login com as credenciais de teste
+
+Se tudo abrir sem erros, o projeto está funcionando! ✓
+
+================================================================================
+6. DADOS DE TESTE (Para Login)
+================================================================================
+
+Use essas credenciais para testar:
+
+EMAIL: operador@example.com
+SENHA: senha123
+
+ROLE: Operador
+(Este é um usuário de teste pré-configurado)
+
+Ou crie um novo usuário acessando a tela de REGISTRO.
+
+================================================================================
+7. POSSÍVEIS ERROS E SOLUÇÕES
+================================================================================
+
+Erro: "python não reconhecido como comando"
+Solução: Python não está instalado ou não está no PATH
+  - Reinstale Python marcando a opção "Add Python to PATH"
+  - Reinicie o PowerShell após instalação
+
+Erro: "npm não reconhecido como comando"
+Solução: Node.js não está instalado
+  - Baixe e instale em https://nodejs.org/
+  - Reinicie o PowerShell
+
+Erro: "ModuleNotFoundError" no Backend
+Solução: Dependências não instaladas corretamente
+  - Execute: pip install -r requirements.txt
+  - Certifique-se que o ambiente virtual (.venv) está ativado
+
+Erro: "Port 8000 is already in use" (Backend)
+Solução: Outra aplicação está usando a porta
+  - Mude a porta: python -m uvicorn app.main:app --port 8001
+  - Ou feche a aplicação que está usando a porta 8000
+
+Erro: "Port 3000 is already in use" (Frontend)
+Solução: Outra aplicação está usando a porta
+  - Execute: npm start (vai perguntar se quer usar outra porta)
+  - Digite "Y" para sim
+
+Erro: "CORS Error" ao fazer requisições
+Solução: Backend não está rodando
+  - Verifique se o servidor FastAPI está ativo na porta 8000
+  - Acesse http://localhost:8000/docs para confirmar
+
+================================================================================
+8. ESTRUTURA DE PASTAS IMPORTANTE
+================================================================================
+
+Trabalho Edibh/
+├── backend/                 ← Código Python (FastAPI)
+│   ├── app/
+│   │   ├── main.py         ← Entrada do Backend
+│   │   ├── config.py       ← Configurações
+│   │   ├── db.py           ← Banco de dados
+│   │   ├── routes/         ← Endpoints da API
+│   │   ├── services/       ← Lógica de negócio
+│   │   └── schemas.py      ← Modelos de dados
+│   ├── requirements.txt    ← Dependências Python
+│   └── pyproject.toml      ← Configurações do projeto
+│
+├── frontend/               ← Código React/TypeScript
+│   ├── src/
+│   │   ├── App.tsx         ← Componente principal
+│   │   ├── components/     ← Componentes React
+│   │   ├── pages/          ← Páginas da aplicação
+│   │   └── api.ts          ← Configuração axios
+│   ├── package.json        ← Dependências NPM
+│   └── public/             ← Assets estáticos
+│
+├── docker-compose.yml      ← Configuração Docker (opcional)
+├── START_LOCAL.bat         ← Script para ativar (Windows)
+├── START_LOCAL.sh          ← Script para ativar (Linux/Mac)
+└── README.md              ← Documentação
+
+================================================================================
+9. DICAS ÚTEIS
+================================================================================
+
+• Para parar o Backend: Pressione CTRL+C no PowerShell
+• Para parar o Frontend: Pressione CTRL+C no PowerShell
+
+• O Backend recarrega automaticamente ao salvar arquivos (--reload)
+• O Frontend recarrega a página automaticamente ao salvar (HMR)
+
+• Use Ctrl+Shift+K para abrir as DevTools no navegador
+• Inspecione Network para ver as requisições da API
+
+• Para limpar cache: npm cache clean --force
+• Para reinstalar dependências: delete pasta node_modules e execute npm install
+
+• Se o projeto ficar lento, reinicie ambos os servidores
+
+================================================================================
+10. RESUMO RÁPIDO
+================================================================================
+
+PRIMEIRA VEZ:
+  1. python -m venv ..\.venv
+  2. ..\..\.venv\Scripts\Activate.ps1
+  3. pip install -r requirements.txt
+  4. npm install (em outra pasta)
+
+PRÓXIMAS VEZES:
+  1. Abra PowerShell #1: cd backend && ..\..\.venv\Scripts\Activate.ps1 && 
+                        python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+  2. Abra PowerShell #2: cd frontend && npm start
+  3. Acesse: http://localhost:3000
+
+OU SIMPLESMENTE:
+  .\START_LOCAL.bat (se estiver no Windows)
+
+================================================================================
+
+Pronto! Seu projeto está pronto para testes locais! 🚀
+
+Se tiver dúvidas, consulte o arquivo README.md ou DEPLOYMENT_GUIDE.md
+

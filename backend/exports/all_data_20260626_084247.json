@@ -1,0 +1,30 @@
+{
+  "exported_at": "2026-06-26T08:42:47.437397",
+  "users": [
+    {
+      "id": "id",
+      "name": "name",
+      "email": "email",
+      "role": "role",
+      "is_active": "is_active",
+      "created_at": "created_at"
+    },
+    {
+      "id": "id",
+      "name": "name",
+      "email": "email",
+      "role": "role",
+      "is_active": "is_active",
+      "created_at": "created_at"
+    },
+    {
+      "id": "id",
+      "name": "name",
+      "email": "email",
+      "role": "role",
+      "is_active": "is_active",
+      "created_at": "created_at"
+    }
+  ],
+  "reports": []
+}
