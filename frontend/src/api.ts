@@ -1,4 +1,5 @@
 import axios from "axios";
+import { createClient } from "@supabase/supabase-js";
 import { emitAlert } from "./alerts";
 
 function normalizeApiUrl(rawUrl: string | undefined): string {
@@ -9,6 +10,10 @@ function normalizeApiUrl(rawUrl: string | undefined): string {
 }
 
 export const API_URL = normalizeApiUrl(process.env.REACT_APP_API_URL);
+
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || "";
+const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 const api = axios.create({ baseURL: API_URL, timeout: 15000 });
 
@@ -24,12 +29,32 @@ let refreshPromise: Promise<string | null> | null = null;
 
 async function refreshAccessToken(): Promise<string | null> {
   const refreshToken = localStorage.getItem("refresh_token");
+  const accessToken = localStorage.getItem("access_token");
   if (!refreshToken) return null;
+
+  // Tenta refresh direto pelo Supabase JS (mais confiável que passar pelo backend)
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.auth.setSession({
+        access_token: accessToken || "",
+        refresh_token: refreshToken,
+      });
+      if (!error && data.session) {
+        localStorage.setItem("access_token", data.session.access_token);
+        localStorage.setItem("refresh_token", data.session.refresh_token);
+        return data.session.access_token;
+      }
+    } catch {
+      // cai no fallback abaixo
+    }
+  }
+
+  // Fallback: refresh via backend
   try {
     const response = await axios.post(`${API_URL}/auth/refresh`, null, { params: { token: refreshToken } });
     const { access_token, refresh_token } = response.data;
     localStorage.setItem("access_token", access_token);
-    localStorage.setItem("refresh_token", refresh_token);
+    if (refresh_token) localStorage.setItem("refresh_token", refresh_token);
     return access_token;
   } catch {
     return null;
